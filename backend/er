@@ -1,0 +1,16 @@
+[90m= [39m[34;4mApp\Models\User[39;24m {#5391
+    [34memail[39m: "[32mjohn.doe@example.com[39m",
+    #[33mhashedPassword[39m: "[32m$2y$12$s3daqpeh5jC3r5CZUBJaiu1.8XGIM3GSx8Ama47PJGNFlnhy66nEC[39m",
+    [34mfirstName[39m: "[32mJohn[39m",
+    [34mlastName[39m: "[32mDoe[39m",
+    [34mdateOfBirth[39m: "[32m1985-08-15[39m",
+    [34mphone[39m: "[32m1234567890[39m",
+    [34mbio[39m: "[32mLorem ipsum dolor sit amet.[39m",
+    [34maddress[39m: "[32m123 Main St[39m",
+    [34mcity[39m: "[32mCityville[39m",
+    [34mzipCode[39m: "[32m12345[39m",
+    [34mupdated_at[39m: "[32m2024-12-16 22:20:48[39m",
+    [34mcreated_at[39m: "[32m2024-12-16 22:20:48[39m",
+    [34mid[39m: [35m1[39m,
+  }
+

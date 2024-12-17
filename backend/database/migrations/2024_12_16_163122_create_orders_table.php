@@ -1,0 +1,37 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     */
+    public function up(): void
+    {
+        Schema::create('orders', function (Blueprint $table) {
+            $table->id();
+            $table->foreignUuid('userId')->constrained()->onDelete('cascade');
+            $table->foreignUuid('supplierId')->constrained()->onDelete('cascade');
+            $table->foreignUuid('productId')->constrained()->onDelete('cascade');
+            $table->string('type');
+            $table->integer('quantity');
+            $table->float('subtotal');
+            $table->float('shipping');
+            $table->float('vat');
+            $table->float('totalPrice');
+            $table->string('status')->default('SHIPPED');
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::dropIfExists('orders');
+    }
+};
