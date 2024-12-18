@@ -1,6 +1,6 @@
 import { fetchData } from "@/lib/api-client";
 import { useQuery } from "@tanstack/react-query";
-import { Product } from "@stockify/backend/types";
+import { Product } from "@/lib/types/index";
 
 export function useAvailableProducts() {
   return useQuery({

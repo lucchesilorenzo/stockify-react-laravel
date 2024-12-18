@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Product } from "@stockify/backend/types";
+import { Product } from "@/lib/types/index";
 import { ChevronLeft, Save, X } from "lucide-react";
 import { useForm } from "react-hook-form";
 

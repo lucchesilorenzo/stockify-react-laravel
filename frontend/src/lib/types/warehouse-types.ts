@@ -1,14 +1,12 @@
 import { Product } from "./product-types";
 
-export type Category = {
+export type Warehouse = {
   id: string;
   name: string;
+  location: string;
+  quantity: number;
+  maxQuantity: number;
   createdAt: Date;
   updatedAt: Date;
   products?: Product[];
-};
-
-export type CategoryVATRates = {
-  value: "4" | "10" | "22";
-  label: "4%" | "10%" | "22%";
 };

@@ -1,7 +1,5 @@
 import { useState } from "react";
 
-import { Product, Task } from "@stockify/backend/types";
-
 import CustomerEditForm from "../customers/CustomerEditForm";
 import OrderForm from "../orders/OrderForm";
 import RestockOrderForm from "../orders/RestockOrderForm";
@@ -22,6 +20,8 @@ import { DIALOG_BTN_VARIANTS } from "@/lib/constants";
 import {
   CustomerWithCustomerShipment,
   FormDialogActionType,
+  Product,
+  Task,
 } from "@/lib/types";
 import TaskEditForm from "../tasks/TaskEditForm";
 

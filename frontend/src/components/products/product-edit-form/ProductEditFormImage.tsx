@@ -1,4 +1,4 @@
-import { Product } from "@stockify/backend/types";
+import { Product } from "@/lib/types/index";
 import { Image as ImageIcon, Upload } from "lucide-react";
 
 import {

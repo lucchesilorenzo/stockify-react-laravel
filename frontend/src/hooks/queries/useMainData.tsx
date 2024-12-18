@@ -1,9 +1,10 @@
 import { fetchData } from "@/lib/api-client";
 import {
+  Category,
   ProductWithCategoryAndWarehouse,
   SupplierWithOrderCount,
+  Warehouse,
 } from "@/lib/types";
-import { Category, Warehouse } from "@stockify/backend/types";
 import { useQueries } from "@tanstack/react-query";
 
 export function useMainData() {

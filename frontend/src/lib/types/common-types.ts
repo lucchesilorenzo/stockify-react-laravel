@@ -6,3 +6,9 @@ export type FormDialogActionType =
   | "addTask"
   | "editTask"
   | "generateTasks";
+
+export type MonthlyInventoryValue = {
+  id: string;
+  month: Date;
+  totalValue: number;
+};

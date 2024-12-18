@@ -1,4 +1,3 @@
-import { Customer } from "@stockify/backend/types";
 import {
   Control,
   Controller,
@@ -21,6 +20,7 @@ import { Label } from "@/components/ui/label";
 import { PhoneInput } from "@/components/common/PhoneInput";
 import { useCustomer } from "@/hooks/useCustomer";
 import { TShippingFormSchema } from "@/lib/validations/customer-validations";
+import { Customer } from "@/lib/types";
 
 type CustomerInfoCardProps = {
   customers: Customer[];

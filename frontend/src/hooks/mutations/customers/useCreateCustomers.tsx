@@ -1,5 +1,5 @@
 import { postData } from "@/lib/api-client";
-import { CustomerEssentials } from "@/lib/types";
+import { CustomerEssentials } from "@/lib/types/index";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 

@@ -1,6 +1,6 @@
 import { updateData } from "@/lib/api-client";
 import { TCustomerEditFormSchema } from "@/lib/validations/customer-validations";
-import { Customer } from "@stockify/backend/types";
+import { Customer } from "@/lib/types/index";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 

@@ -1,43 +1,90 @@
-import { Customer, CustomerShipment, Prisma } from "@stockify/backend/types";
+import { Product } from "./product-types";
+
+export type Customer = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+  zipCode: string;
+  createdAt: Date;
+  updatedAt: Date;
+  customerShipments?: CustomerShipment[];
+};
 
 export type CustomerEssentials = Omit<
   Customer,
   "id" | "createdAt" | "updatedAt"
 >;
 
-export type CustomerWithCustomerShipment = Prisma.CustomerGetPayload<{
-  include: {
-    customerShipments: {
-      include: {
-        shipmentItems: {
-          include: {
-            product: {
-              select: {
-                name: true;
-                price: true;
-              };
-            };
-          };
-        };
-      };
-    };
-  };
-}>;
+export type CustomerShipment = {
+  id: string;
+  customerId: string;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  customer?: Customer;
+  shipmentItems?: ShipmentItem[];
+};
 
-export type CustomerShipmentWithItems = Prisma.CustomerShipmentGetPayload<{
-  include: {
+export type ShipmentItem = {
+  id: string;
+  productId: string;
+  customerShipmentId: string;
+  quantity: number;
+  product?: Product;
+  customerShipment?: CustomerShipment;
+};
+
+export type CustomerWithCustomerShipment = {
+  id: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  address: string;
+  city: string;
+  zipCode: string;
+  createdAt: Date;
+  updatedAt: Date;
+  customerShipments: {
+    id: string;
+    customerId: string;
+    status: string;
+    createdAt: Date;
+    updatedAt: Date;
     shipmentItems: {
-      include: {
-        product: {
-          select: {
-            name: true;
-            price: true;
-          };
-        };
+      id: string;
+      productId: string;
+      customerShipmentId: string;
+      quantity: number;
+      product: {
+        name: string;
+        price: number;
       };
+    }[];
+  }[];
+};
+
+export type CustomerShipmentWithItems = {
+  id: string;
+  customerId: string;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  shipmentItems: {
+    id: string;
+    productId: string;
+    customerShipmentId: string;
+    quantity: number;
+    product: {
+      name: string;
+      price: number;
     };
-  };
-}>;
+  }[];
+};
 
 export type CustomerSelectedProduct = {
   productId: string;

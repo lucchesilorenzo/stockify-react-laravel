@@ -1,10 +1,9 @@
-import { Activity } from "@stockify/backend/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { ChevronsUpDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { DashboardActivity } from "@/lib/types";
+import { Activity, DashboardActivity } from "@/lib/types";
 import { capitalize, cn } from "@/lib/utils";
 
 export const columns: ColumnDef<DashboardActivity>[] = [

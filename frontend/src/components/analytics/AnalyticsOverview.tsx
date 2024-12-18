@@ -1,5 +1,4 @@
-import { Category } from "@stockify/backend/types";
-
+import { Category } from "@/lib/types";
 import AnalyticsOverviewLineChart from "./AnalyticsOverviewLineChart";
 import AnalyticsOverviewPieChart from "./AnalyticsOverviewPieChart";
 

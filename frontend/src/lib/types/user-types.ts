@@ -1,4 +1,25 @@
-import { User } from "@stockify/backend/types";
+import { Activity } from "./activity-types";
+import { Order } from "./order-types";
+import { Task } from "./task-types";
+
+export type User = {
+  id: string;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  dateOfBirth: Date | null;
+  phone: string | null;
+  bio: string | null;
+  address: string | null;
+  city: string | null;
+  zipCode: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  orders?: Order[];
+  tasks?: Task[];
+  activities?: Activity[];
+};
 
 export type UserEssentials = Pick<
   User,

@@ -1,5 +1,5 @@
 import { updateData } from "@/lib/api-client";
-import { Supplier } from "@stockify/backend/types";
+import { Supplier } from "@/lib/types/index";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 

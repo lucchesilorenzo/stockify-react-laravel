@@ -1,4 +1,4 @@
-import { Product } from "@stockify/backend/types";
+import { Product } from "@/lib/types/index";
 import { FieldErrors, UseFormRegister } from "react-hook-form";
 
 import { Input } from "@/components/ui/input";

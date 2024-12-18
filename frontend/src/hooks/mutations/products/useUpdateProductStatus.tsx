@@ -1,7 +1,7 @@
 import { updateData } from "@/lib/api-client";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Product } from "@stockify/backend/types";
+import { Product } from "@/lib/types/index";
 
 type UpdateProductStatus = {
   productId: Product["id"];

@@ -1,14 +1,14 @@
-import { Prisma, User } from "@stockify/backend/types";
-
 import { ProductEssentials } from "./product-types";
+import { User } from "@/lib/types/index";
 
 export type Activity = {
   id: string;
   userId: string;
   activity: string;
   entity: string;
-  product?: string;
+  product: string | null;
   createdAt: Date;
+  user?: User;
 };
 
 export type ActivityEssentials = {
@@ -25,13 +25,9 @@ export type ActivityEssentials = {
   userId: User["id"];
 };
 
-export type DashboardActivity = Prisma.ActivityGetPayload<{
-  include: {
-    user: {
-      select: {
-        firstName: true;
-        lastName: true;
-      };
-    };
+export type DashboardActivity = Activity & {
+  user: {
+    firstName: string;
+    lastName: string;
   };
-}>;
+};

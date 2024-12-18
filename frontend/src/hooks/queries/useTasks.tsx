@@ -1,5 +1,5 @@
 import { fetchData } from "@/lib/api-client";
-import { TaskWithUser } from "@/lib/types";
+import { TaskWithUser } from "@/lib/types/index";
 import { useQuery } from "@tanstack/react-query";
 
 export function useTasks() {

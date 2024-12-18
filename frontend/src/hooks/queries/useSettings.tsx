@@ -1,5 +1,5 @@
 import { fetchData } from "@/lib/api-client";
-import { UserSettings } from "@/lib/types";
+import { UserSettings } from "@/lib/types/index";
 import { useQuery } from "@tanstack/react-query";
 
 export function useSettings() {

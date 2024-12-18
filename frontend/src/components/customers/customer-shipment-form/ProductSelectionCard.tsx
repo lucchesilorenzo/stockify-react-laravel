@@ -1,4 +1,3 @@
-import { Product } from "@stockify/backend/types";
 import { FieldErrors, UseFormSetValue } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -23,6 +22,7 @@ import {
 import { useCustomer } from "@/hooks/useCustomer";
 import { formatCurrency } from "@/lib/utils";
 import { TShippingFormSchema } from "@/lib/validations/customer-validations";
+import { Product } from "@/lib/types";
 
 type ProductSelectionCardProps = {
   products: Product[];

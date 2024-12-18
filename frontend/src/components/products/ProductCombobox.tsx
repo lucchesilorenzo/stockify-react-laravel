@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Product } from "@stockify/backend/types";
+import { Product } from "@/lib/types/index";
 import { Check, ChevronsUpDown } from "lucide-react";
 import { UseFormSetValue } from "react-hook-form";
 

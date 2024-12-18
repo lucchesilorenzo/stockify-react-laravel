@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Customer, Product } from "@stockify/backend/types";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
@@ -15,6 +14,7 @@ import {
   shippingFormSchema,
 } from "@/lib/validations/customer-validations";
 import { useCreateShipment } from "@/hooks/mutations/customers/useCreateShipment";
+import { Customer, Product } from "@/lib/types";
 
 type CustomerShipmentFormProps = {
   products: Product[];

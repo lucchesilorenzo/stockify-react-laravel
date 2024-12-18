@@ -1,5 +1,5 @@
 import { fetchData } from "@/lib/api-client";
-import { ProductWithCategoryAndWarehouse } from "@/lib/types";
+import { ProductWithCategoryAndWarehouse } from "@/lib/types/index";
 import { useQuery } from "@tanstack/react-query";
 
 type useProductProps = {

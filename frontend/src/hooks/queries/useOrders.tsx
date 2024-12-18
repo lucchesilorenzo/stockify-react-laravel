@@ -1,6 +1,5 @@
 import { fetchData } from "@/lib/api-client";
-import { DetailedOrder } from "@/lib/types";
-import { Order } from "@stockify/backend/types";
+import { DetailedOrder, Order } from "@/lib/types/index";
 import { useQueries } from "@tanstack/react-query";
 
 export function useOrders() {

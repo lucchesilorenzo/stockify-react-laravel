@@ -1,9 +1,13 @@
-import { Category, Product, Task } from "@stockify/backend/types";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-import { CustomerShipmentWithItems } from "./types";
-import { Order } from "@stockify/backend/types";
+import {
+  Category,
+  CustomerShipmentWithItems,
+  Order,
+  Product,
+  Task,
+} from "./types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

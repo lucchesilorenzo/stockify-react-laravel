@@ -1,4 +1,17 @@
-import { Task } from "@stockify/backend/types";
+import { User } from "./user-types";
+
+export type Task = {
+  id: string;
+  userId: string;
+  title: string;
+  status: string;
+  priority: string;
+  label: string;
+  dueDate: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  user?: User;
+};
 
 export type TaskWithUser = Task & {
   user: {

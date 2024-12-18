@@ -1,4 +1,4 @@
-import { Category, Product, Warehouse } from "@stockify/backend/types";
+import { Category, Product, Warehouse } from "@/lib/types/index";
 import { FieldErrors, UseFormSetValue } from "react-hook-form";
 
 import ProductEditFormCategorySelect from "./ProductEditFormCategorySelect";

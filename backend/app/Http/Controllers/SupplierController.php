@@ -4,62 +4,69 @@ namespace App\Http\Controllers;
 
 use App\Models\Supplier;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class SupplierController extends Controller
 {
     /**
      * Display a listing of the resource.
+     *
+     * @param Request $request
+     * @return void
      */
-    public function index()
+    public function getSuppliers(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $suppliers = Supplier::withCount('orders')->get();
+        return response()->json($suppliers);
     }
 
     /**
      * Store a newly created resource in storage.
+     *
+     * @param Request $request
+     * @return void
      */
-    public function store(Request $request)
+    public function createSupplier(Request $request)
     {
-        //
-    }
+        // Validation
+        $rules = Validator::make($request->all(), ([
+            'name' => 'required|string|min:1|max:20',
+            'email' => 'required|email|unique:users',
+            'phone' => 'required|string|min:1|max:15',
+            'address' => 'required|string|min:1|max:40',
+            'city' => 'required|string|min:1|max:20',
+            'zip_code' => 'required|string|min:1|max:10',
+            'website' => 'string|min:1|max:100',
+        ]));
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Supplier $supplier)
-    {
-        //
-    }
+        // Check if validation fails
+        if ($rules->fails()) {
+            return response()->json(['message' => 'Invalid supplier data.'], 400);
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Supplier $supplier)
-    {
-        //
-    }
+        // Get validated data
+        $validatedData = $rules->validated();
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Supplier $supplier)
-    {
-        //
-    }
+        // Create supplier
+        try {
+            Supplier::create($validatedData);
+        } catch (\Throwable $e) {
+            return response()->json(['message' => 'Failed to create supplier.'], 500);
+        }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Supplier $supplier)
-    {
-        //
+        // Create activity
+        $activity = [
+            'activity' => 'CREATED',
+            'entity' => 'Supplier',
+            'user_id' => auth()->user()->id,
+        ];
+
+        try {
+            Activity::create($activity);
+        } catch (\Throwable $e) {
+            return response()->json(['message' => 'Failed to create activity.'], 500);
+        }
+
+        return response()->json(['message' => 'Supplier created successfully.'], 201);
     }
 }

@@ -1,4 +1,3 @@
-import { Product } from "@stockify/backend/types";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { ChevronsUpDown, Truck } from "lucide-react";
@@ -7,7 +6,7 @@ import OrderActions from "@/components/orders/OrderActions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { orderStatuses } from "@/lib/data";
-import { DetailedOrder, OrderStatus, OrderType } from "@/lib/types";
+import { DetailedOrder, OrderStatus, OrderType, Product } from "@/lib/types";
 import { capitalize, formatCurrency, formatOrderId } from "@/lib/utils";
 
 export const columns: ColumnDef<DetailedOrder>[] = [

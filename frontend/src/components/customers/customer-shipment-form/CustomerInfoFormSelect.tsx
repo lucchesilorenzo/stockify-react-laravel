@@ -1,4 +1,3 @@
-import { Customer } from "@stockify/backend/types";
 import { X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -13,6 +12,7 @@ import {
 import { useCustomer } from "@/hooks/useCustomer";
 import { Separator } from "@/components/ui/separator";
 import CustomerCSVUpload from "./CustomerCSVUpload";
+import { Customer } from "@/lib/types";
 
 type CustomerInfoFormSelectProps = {
   customers: Customer[];

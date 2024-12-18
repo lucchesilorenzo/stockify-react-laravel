@@ -1,5 +1,5 @@
 import { deleteData } from "@/lib/api-client";
-import { Task } from "@stockify/backend/types";
+import { Task } from "@/lib/types/index";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 

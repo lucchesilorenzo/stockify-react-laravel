@@ -1,4 +1,25 @@
-import { Order, Prisma } from "@stockify/backend/types";
+import { Product } from "./product-types";
+import { Supplier } from "./supplier-types";
+import { User } from "./user-types";
+
+export type Order = {
+  id: string;
+  userId: string;
+  supplierId: string;
+  productId: string;
+  type: string;
+  quantity: number;
+  subtotal: number;
+  shipping: number;
+  vat: number;
+  totalPrice: number;
+  status: string;
+  createdAt: Date;
+  updatedAt: Date;
+  user?: User;
+  product?: Product;
+  supplier?: Supplier;
+};
 
 export type OrderEssentials = Omit<
   Order,
@@ -10,26 +31,18 @@ export type OrderType = {
   label: "New Orders" | "Restock Orders";
 };
 
-export type DetailedOrder = Prisma.OrderGetPayload<{
-  include: {
-    product: {
-      select: {
-        name: true;
-      };
-    };
-    supplier: {
-      select: {
-        name: true;
-      };
-    };
-    user: {
-      select: {
-        firstName: true;
-        lastName: true;
-      };
-    };
+export type DetailedOrder = Order & {
+  product: {
+    name: string;
   };
-}>;
+  supplier: {
+    name: string;
+  };
+  user: {
+    firstName: string;
+    lastName: string;
+  };
+};
 
 export type OrderStatus = {
   value: "SHIPPED" | "DELIVERED";

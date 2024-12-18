@@ -18,21 +18,21 @@ class AuthController extends Controller
   public function signUp(Request $request)
   {
     // Validation
-    $validated = Validator::make($request->all(), ([
-      'firstName' => 'required|string|min:1|max:20',
-      'lastName' => 'required|string|min:1|max:20',
+    $rules = Validator::make($request->all(), ([
+      'first_name' => 'required|string|min:1|max:20',
+      'last_name' => 'required|string|min:1|max:20',
       'email' => 'required|email|unique:users',
       'password' => 'required|string|min:8|max:20',
-      'confirmPassword' => 'required|string|min:8|max:20|same:password',
+      'confirm_password' => 'required|string|min:8|max:20|same:password',
     ]));
 
     // Check if validation fails
-    if ($validated->fails()) {
+    if ($rules->fails()) {
       return response()->json(['message' => 'Invalid credentials.'], 400);
     }
 
     // Get validated data
-    $validatedData = $validated->validated();
+    $validatedData = $rules->validated();
 
     // Hash password
     $password = bcrypt($validatedData['password']);
@@ -40,8 +40,8 @@ class AuthController extends Controller
     try {
       // Create user
       $newUser = [
-        'firstName' => $validatedData['firstName'],
-        'lastName' => $validatedData['lastName'],
+        'first_name' => $validatedData['first_name'],
+        'last_name' => $validatedData['last_name'],
         'email' => $validatedData['email'],
         'password' => $password,
       ];
@@ -54,10 +54,7 @@ class AuthController extends Controller
 
       return response()->json(['token' => $token], 201);
     } catch (\Throwable $e) {
-      return response()->json([
-        'message' => 'Could not create user.',
-        'error' => $e->getMessage()
-      ], 500);
+      return response()->json(['message' => 'Could not create user.'], 500);
     }
   }
 
@@ -70,18 +67,18 @@ class AuthController extends Controller
   public function login(Request $request)
   {
     // Validation
-    $validated = Validator::make($request->all(), ([
+    $rules = Validator::make($request->all(), ([
       'email' => 'required|email',
       'password' => 'required',
     ]));
 
     // Check if validation fails
-    if ($validated->fails()) {
+    if ($rules->fails()) {
       return response()->json(['message' => 'Invalid credentials.'], 400);
     }
 
     // Get validated data
-    $validatedData = $validated->validated();
+    $validatedData = $rules->validated();
 
     try {
       // Check if user exists and password is correct
@@ -95,10 +92,7 @@ class AuthController extends Controller
 
       return response()->json(['token' => $token], 200);
     } catch (\Throwable $e) {
-      return response()->json([
-        'message' => 'Could not login user.',
-        'error' => $e->getMessage()
-      ], 500);
+      return response()->json(['message' => 'Could not login user.'], 500);
     }
   }
 

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchData } from "@/lib/api-client";
-import { DashboardActivity } from "@/lib/types";
+import { DashboardActivity } from "@/lib/types/index";
 
 export function useActivities() {
   return useQuery({
