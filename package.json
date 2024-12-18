@@ -4,7 +4,7 @@
   "description": "Stockify",
   "scripts": {
     "start": "concurrently \"npm run backend\" \"npm run frontend\"",
-    "backend": "cd backend && npm run dev",
+    "backend": "cd backend && php artisan serve",
     "frontend": "cd frontend && npm run dev",
     "install-all": "cd frontend && npm install && cd ../backend && npm install"
   },

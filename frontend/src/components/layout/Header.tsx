@@ -17,13 +17,16 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Link, useNavigate } from "react-router-dom";
+import { useLogOut } from "@/hooks/mutations/auth/useLogOut";
 
 export default function Header() {
+  const { mutateAsync: logOut } = useLogOut();
   const [open, setOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
   const navigate = useNavigate();
 
-  function handleLogOut() {
+  async function handleLogOut() {
+    await logOut();
     startTransition(() => {
       localStorage.removeItem("token");
       navigate("/login");

@@ -15,11 +15,14 @@ use Illuminate\Support\Facades\Route;
 
 // Auth
 Route::prefix('auth')->group(function () {
-    Route::post('/signup', [AuthController::class, 'signup']);
-    Route::post('/login', [AuthController::class, 'login']);
+    Route::post('/signup', [AuthController::class, 'signUp']);
+    Route::post('/login', [AuthController::class, 'logIn']);
 });
 
 Route::middleware('auth:sanctum')->group(function () {
+    // Auth
+    Route::post('/logout', [AuthController::class, 'logOut']);
+
     // Dashboard
     Route::prefix('dashboard')->group(function () {
         Route::get('/inventory-value', [DashboardController::class, 'getInventoryValue']);

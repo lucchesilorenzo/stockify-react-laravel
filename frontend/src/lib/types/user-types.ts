@@ -2,7 +2,7 @@ import { User } from "@stockify/backend/types";
 
 export type UserEssentials = Pick<
   User,
-  "email" | "hashedPassword" | "firstName" | "lastName"
+  "email" | "password" | "firstName" | "lastName"
 >;
 
 export type UserSettings = {
