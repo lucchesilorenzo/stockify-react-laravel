@@ -13,8 +13,8 @@ class ShipmentItem extends Model
      * @var array
      */
     protected $fillable = [
-        'productId',
-        'customerShipmentId',
+        'product_id',
+        'customer_shipment_id',
         'quantity',
     ];
 

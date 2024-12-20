@@ -14,7 +14,7 @@ class CustomerShipment extends Model
      * @var array
      */
     protected $fillable = [
-        'customerId',
+        'customer_id',
         'status',
     ];
 

@@ -1,10 +1,11 @@
 import { createContext } from "react";
 
-import { Category, Warehouse } from "@stockify/backend/types";
 import {
+  Category,
+  Warehouse,
   ProductWithCategoryAndWarehouse,
   SupplierWithOrderCount,
-} from "@/lib/types";
+} from "@/lib/types/index";
 
 type ProductProviderProps = {
   children: React.ReactNode;

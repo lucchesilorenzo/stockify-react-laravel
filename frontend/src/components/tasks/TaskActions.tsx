@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Task } from "@stockify/backend/types";
+import { Task } from "@/lib/types/index";
 import { MoreHorizontalIcon } from "lucide-react";
 
 import DropdownSubMenu from "../common/DropdownSubMenu";

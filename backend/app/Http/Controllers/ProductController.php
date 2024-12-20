@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
@@ -12,7 +11,7 @@ class ProductController extends Controller
    *
    * @return void
    */
-  public function getProducts(Request $request)
+  public function getProducts()
   {
     $products = Product::whereHas('orders', function ($query) {
       $query->where('status', 'DELIVERED');

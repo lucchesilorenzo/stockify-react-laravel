@@ -13,15 +13,15 @@ class Order extends Model
      * @var array
      */
     protected $fillable = [
-        'userId',
-        'supplierId',
-        'productId',
+        'user_id',
+        'supplier_id',
+        'product_id',
         'type',
         'quantity',
         'subtotal',
         'shipping',
         'vat',
-        'totalPrice',
+        'total_price',
         'status',
     ];
 

@@ -4,9 +4,9 @@ import { Order } from "./order-types";
 import { Warehouse } from "./warehouse-types";
 
 export type Product = {
-  id: string;
-  categoryId: string;
-  warehouseId: string;
+  id: number;
+  categoryId: number;
+  warehouseId: number;
   name: string;
   slug: string;
   sku: string;

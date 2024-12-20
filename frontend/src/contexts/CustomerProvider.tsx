@@ -1,11 +1,11 @@
 import { createContext, useState } from "react";
 
-import { Customer, Product } from "@stockify/backend/types";
-
 import {
+  Customer,
+  Product,
   CustomerSelectedProduct,
   CustomerShipmentWithItems,
-} from "@/lib/types";
+} from "@/lib/types/index";
 
 type CustomerProviderProps = {
   children: React.ReactNode;

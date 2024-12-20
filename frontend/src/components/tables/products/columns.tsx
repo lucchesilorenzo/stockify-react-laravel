@@ -1,4 +1,4 @@
-import { Product } from "@stockify/backend/types";
+import { Product } from "@/lib/types/index";
 import { ColumnDef } from "@tanstack/react-table";
 import { ChevronsUpDown } from "lucide-react";
 

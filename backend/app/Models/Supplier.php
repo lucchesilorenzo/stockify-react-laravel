@@ -18,7 +18,7 @@ class Supplier extends Model
         'phone',
         'address',
         'city',
-        'zipCode',
+        'zip_code',
         'website',
         'rating',
     ];

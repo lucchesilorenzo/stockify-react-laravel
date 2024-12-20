@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('customer_shipments', function (Blueprint $table) {
             $table->id();
-            $table->foreignUuid('customerId')->constrained()->onDelete('cascade');
+            $table->foreignId('customer_id')->constrained()->onDelete('cascade');
             $table->string('status')->default('SHIPPED');
             $table->timestamps();
         });

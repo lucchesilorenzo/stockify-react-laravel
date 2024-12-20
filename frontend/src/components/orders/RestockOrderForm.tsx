@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Product } from "@stockify/backend/types";
+import { Product } from "@/lib/types/index";
 import { useForm } from "react-hook-form";
 
 import { LoadingButton } from "../common/LoadingButton";

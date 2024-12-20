@@ -13,6 +13,6 @@ class MonthlyInventoryValue extends Model
      */
     protected $fillable = [
         'month',
-        'totalValue'
+        'total_value'
     ];
 }

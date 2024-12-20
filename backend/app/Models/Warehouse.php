@@ -16,7 +16,7 @@ class Warehouse extends Model
         'name',
         'location',
         'quantity',
-        'maxQuantity',
+        'max_quantity',
     ];
 
     /**

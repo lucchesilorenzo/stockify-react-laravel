@@ -17,14 +17,15 @@ class Product extends Model
      * @var array
      */
     protected $fillable = [
-        'categoryId',
-        'warehouseId',
+        'category_id',
+        'warehouse_id',
         'name',
         'slug',
+        'sku',
         'price',
         'quantity',
-        'maxQuantity',
-        'vatRate',
+        'max_quantity',
+        'vat_rate',
         'description',
         'status',
         'image',

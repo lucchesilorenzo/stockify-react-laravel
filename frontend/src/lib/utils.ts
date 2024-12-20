@@ -7,7 +7,7 @@ import {
   Order,
   Product,
   Task,
-} from "./types";
+} from "./types/index";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -48,20 +48,21 @@ export function parseDates<T>(data: T): T {
 
 export function formatOrderId(order: Order) {
   const date = order.createdAt.toISOString().split("T")[0].replace(/-/g, "");
-  const numberPart = order.id.slice(-4).toUpperCase();
+  const numberPart = order.id;
 
   return `ORD-${date}-${numberPart}`;
 }
 
 export function formatShipmentId(shipment: CustomerShipmentWithItems) {
   const date = shipment.createdAt.toISOString().split("T")[0].replace(/-/g, "");
-  const numberPart = shipment.id.slice(-4).toUpperCase();
+  const numberPart = shipment.id;
 
   return `SHIP-${date}-${numberPart}`;
 }
 
-export function formatTaskId(task: Task) {
-  const numberPart = task.id.slice(-4).toUpperCase();
+// TASK-1, not like the Next.js/Express way
+export function formatTaskId(taskId: Task["id"]) {
+  const numberPart = taskId;
 
   return `TASK-${numberPart}`;
 }

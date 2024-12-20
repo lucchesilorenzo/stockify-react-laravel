@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('phone')->unique();
             $table->string('address');
             $table->string('city');
-            $table->string('zipCode');
-            $table->string('website')->nullable();
+            $table->string('zip_code');
+            $table->string('website')->nullable()->unique();
             $table->integer('rating')->default(0);
             $table->timestamps();
         });

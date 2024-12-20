@@ -13,7 +13,7 @@ class Activity extends Model
      * @var array
      */
     protected $fillable = [
-        'userId',
+        'user_id',
         'activity',
         'entity',
         'product',

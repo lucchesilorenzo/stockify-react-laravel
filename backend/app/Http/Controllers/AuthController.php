@@ -19,11 +19,11 @@ class AuthController extends Controller
   {
     // Validation
     $rules = Validator::make($request->all(), ([
-      'first_name' => 'required|string|min:1|max:20',
-      'last_name' => 'required|string|min:1|max:20',
-      'email' => 'required|email|unique:users',
-      'password' => 'required|string|min:8|max:20',
-      'confirm_password' => 'required|string|min:8|max:20|same:password',
+      'first_name' => 'required|string|max:20',
+      'last_name' => 'required|string|max:20',
+      'email' => 'required|email|unique:users,email',
+      'password' => 'required|string|max:20',
+      'confirm_password' => 'required|string|max:20|same:password',
     ]));
 
     // Check if validation fails
@@ -64,7 +64,7 @@ class AuthController extends Controller
    * @param Request $request
    * @return void
    */
-  public function login(Request $request)
+  public function logIn(Request $request)
   {
     // Validation
     $rules = Validator::make($request->all(), ([

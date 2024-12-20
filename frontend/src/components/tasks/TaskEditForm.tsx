@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Task } from "@stockify/backend/types";
+import { Task } from "@/lib/types/index";
 import { useForm } from "react-hook-form";
 
 import TaskFormDatePicker from "./task-form/TaskFormDatePicker";

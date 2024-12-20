@@ -3,7 +3,7 @@ import { Order } from "./order-types";
 import { Task } from "./task-types";
 
 export type User = {
-  id: string;
+  id: number;
   email: string;
   password: string;
   firstName: string;

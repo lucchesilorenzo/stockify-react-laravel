@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->string('location');
             $table->integer('quantity');
-            $table->integer('maxQuantity');
+            $table->integer('max_quantity');
             $table->timestamps();
         });
     }

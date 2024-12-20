@@ -20,16 +20,16 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
-        'firstName',
-        'lastName',
+        'first_name',
+        'last_name',
         'password',
         'email',
-        'dateOfBirth',
+        'date_of_birth',
         'phone',
         'bio',
         'address',
         'city',
-        'zipCode',
+        'zip_code',
     ];
 
     /**
@@ -72,7 +72,7 @@ class User extends Authenticatable
      */
     public function tasks(): HasMany
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Task::class);
     }
 
     /**
@@ -82,6 +82,6 @@ class User extends Authenticatable
      */
     public function activities(): HasMany
     {
-        return $this->hasMany(Order::class);
+        return $this->hasMany(Activity::class);
     }
 }

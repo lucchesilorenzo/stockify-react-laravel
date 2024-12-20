@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Task } from "@stockify/backend/types";
+import { Task } from "@/lib/types/index";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import { ChevronsUpDown } from "lucide-react";
@@ -9,7 +9,7 @@ import TaskActions from "@/components/tasks/TaskActions";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { taskLabels, taskPriorities, taskStatuses } from "@/lib/data";
-import { TaskWithUser } from "@/lib/types";
+import { TaskWithUser } from "@/lib/types/index";
 import { formatTaskId } from "@/lib/utils";
 
 export const columns: ColumnDef<TaskWithUser>[] = [
@@ -27,9 +27,9 @@ export const columns: ColumnDef<TaskWithUser>[] = [
       );
     },
     cell: ({ row }) => {
-      const task = row.original;
+      const id: Task["id"] = row.getValue("id");
 
-      return <div className="font-medium">{formatTaskId(task)}</div>;
+      return <div className="font-medium">{formatTaskId(id)}</div>;
     },
   },
   {

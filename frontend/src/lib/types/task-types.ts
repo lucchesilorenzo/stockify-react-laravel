@@ -1,8 +1,8 @@
 import { User } from "./user-types";
 
 export type Task = {
-  id: string;
-  userId: string;
+  id: number;
+  userId: number;
   title: string;
   status: string;
   priority: string;
@@ -15,6 +15,7 @@ export type Task = {
 
 export type TaskWithUser = Task & {
   user: {
+    id: number;
     firstName: string;
     lastName: string;
   };

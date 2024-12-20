@@ -14,15 +14,15 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('email')->unique();
-            $table->string('hashedPassword');
-            $table->string('firstName');
-            $table->string('lastName');
-            $table->date('dateOfBirth')->nullable();
+            $table->string('password');
+            $table->string('first_name');
+            $table->string('last_name');
+            $table->date('date_of_birth')->nullable();
             $table->string('phone')->unique()->nullable();
             $table->text('bio')->nullable();
             $table->string('address')->nullable();
             $table->string('city')->nullable();
-            $table->string('zipCode')->nullable();
+            $table->string('zip_code')->nullable();
             $table->timestamps();
         });
     }

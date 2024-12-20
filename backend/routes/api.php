@@ -37,9 +37,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/to-restock', [ProductController::class, 'getProductsToRestock']);
         Route::get('/available', [ProductController::class, 'getAvailableProducts']);
         Route::get('/slug/{productSlug}', [ProductController::class, 'getProductBySlug']);
-        Route::get('/{productId}', [ProductController::class, 'getProduct']);
-        Route::patch('/{productId}', [ProductController::class, 'updateProduct']);
-        Route::patch('/{productId}/status', [ProductController::class, 'updateProductStatus']);
+        Route::get('/{product}', [ProductController::class, 'getProduct']);
+        Route::patch('/{product}', [ProductController::class, 'updateProduct']);
+        Route::patch('/{product}/status', [ProductController::class, 'updateProductStatus']);
         Route::get('/', [ProductController::class, 'getProducts']);
     });
 
@@ -47,9 +47,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('tasks')->group(function () {
         Route::post('/generate', [TaskController::class, 'generateTasks']);
         Route::post('/', [TaskController::class, 'createTask']);
-        Route::patch('/{taskId}/field', [TaskController::class, 'updateTaskField']);
-        Route::patch('/{taskId}', [TaskController::class, 'updateTask']);
-        Route::delete('/', [TaskController::class, 'deleteTask']);
+        Route::patch('/{task}/field', [TaskController::class, 'updateTaskField']);
+        Route::patch('/{task}', [TaskController::class, 'updateTask']);
+        Route::delete('/{task}', [TaskController::class, 'deleteTask']);
         Route::get('/', [TaskController::class, 'getTasks']);
     });
 
@@ -60,7 +60,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/', [OrderController::class, 'getOrders']);
         Route::post('/restock', [OrderController::class, 'createRestockOrder']);
         Route::post('/', [OrderController::class, 'createOrder']);
-        Route::patch('/{orderId}/status', [OrderController::class, 'updateOrderStatus']);
+        Route::patch('/{order}/status', [OrderController::class, 'updateOrderStatus']);
     });
 
     // Customers
@@ -68,12 +68,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/shipment', [CustomerController::class, 'createCustomerShipment']);
         Route::post('/', [CustomerController::class, 'createCustomer']);
         Route::get('/', [CustomerController::class, 'getCustomers']);
-        Route::patch('/{customerId}', [CustomerController::class, 'updateCustomer']);
+        Route::patch('/{customer}', [CustomerController::class, 'updateCustomer']);
     });
 
     // Suppliers
     Route::prefix('suppliers')->group(function () {
-        Route::patch('/{supplierId}/rating', [SupplierController::class, 'updateSupplierRating']);
+        Route::patch('/{supplier}/rating', [SupplierController::class, 'updateSupplierRating']);
         Route::post('/', [SupplierController::class, 'createSupplier']);
         Route::get('/', [SupplierController::class, 'getSuppliers']);
     });

@@ -1,4 +1,4 @@
-import { Order } from "@stockify/backend/types";
+import { Order } from "@/lib/types/index";
 import { CalendarDays } from "lucide-react";
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";

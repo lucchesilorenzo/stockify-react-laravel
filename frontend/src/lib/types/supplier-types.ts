@@ -1,7 +1,7 @@
 import { Order } from "./order-types";
 
 export type Supplier = {
-  id: string;
+  id: number;
   name: string;
   email: string;
   phone: string;

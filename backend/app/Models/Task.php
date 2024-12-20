@@ -13,12 +13,21 @@ class Task extends Model
      * @var array
      */
     protected $fillable = [
-        'userId',
+        'user_id',
         'title',
         'status',
         'priority',
         'label',
-        'dueDate'
+        'due_date'
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'due_date' => 'datetime',
     ];
 
     /**

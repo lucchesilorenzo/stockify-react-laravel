@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('shipment_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignUuid('productId')->constrained()->onDelete('cascade');
-            $table->foreignUuid('customerShipmentId')->constrained()->onDelete('cascade');
+            $table->foreignId('product_id')->constrained()->onDelete('cascade');
+            $table->foreignId('customer_shipment_id')->constrained()->onDelete('cascade');
             $table->integer('quantity');
         });
     }

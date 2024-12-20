@@ -1,10 +1,13 @@
 import axios from "axios";
 import env from "./env";
 import { parseDates } from "./utils";
+import applyCaseMiddleware from "axios-case-converter";
 
-const api = axios.create({
-  baseURL: `${env.VITE_BASE_URL}/api`,
-});
+const api = applyCaseMiddleware(
+  axios.create({
+    baseURL: `${env.VITE_BASE_URL}/api`,
+  }),
+);
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("token");
