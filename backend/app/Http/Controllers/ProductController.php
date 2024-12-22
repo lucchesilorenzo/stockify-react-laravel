@@ -48,8 +48,8 @@ class ProductController extends Controller
     try {
       $availableProducts = Product::where('status', 'IN_STOCK')
         ->where('quantity', '>', 0)
-        ->whereDoesntHave('orders', function ($query) {
-          $query->where('status', '!=', 'DELIVERED');
+        ->whereHas('orders', function ($query) {
+          $query->where('status', 'DELIVERED');
         })
         ->get();
 
@@ -71,8 +71,8 @@ class ProductController extends Controller
   {
     try {
       $productsToRestock = Product::whereNot('status', 'ARCHIVED')
-        ->whereDoesntHave('orders', function ($query) {
-          $query->where('status', '!=', 'DELIVERED');
+        ->whereHas('orders', function ($query) {
+          $query->where('status', 'DELIVERED');
         })->get();
 
       return response()->json($productsToRestock);
