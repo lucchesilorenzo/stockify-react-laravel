@@ -24,7 +24,7 @@ return new class extends Migration
             $table->integer('vat_rate');
             $table->text('description')->nullable();
             $table->string('status')->default('IN_STOCK');
-            $table->string('image')->default('/placeholder.svg');
+            $table->string('image')->default('placeholder.svg');
             $table->timestamps();
         });
     }

@@ -84,7 +84,7 @@ export default function OrderForm({ onFormSubmit }: OrderFormProps) {
               </SelectTrigger>
               <SelectContent>
                 {categories.map((category) => (
-                  <SelectItem key={category.id} value={category.id}>
+                  <SelectItem key={category.id} value={String(category.id)}>
                     {category.name}
                   </SelectItem>
                 ))}
@@ -132,7 +132,7 @@ export default function OrderForm({ onFormSubmit }: OrderFormProps) {
               </SelectTrigger>
               <SelectContent>
                 {warehouses.map((warehouse) => (
-                  <SelectItem key={warehouse.id} value={warehouse.id}>
+                  <SelectItem key={warehouse.id} value={String(warehouse.id)}>
                     {warehouse.name}
                   </SelectItem>
                 ))}
@@ -155,7 +155,7 @@ export default function OrderForm({ onFormSubmit }: OrderFormProps) {
               </SelectTrigger>
               <SelectContent>
                 {suppliers.map((supplier) => (
-                  <SelectItem key={supplier.id} value={supplier.id}>
+                  <SelectItem key={supplier.id} value={String(supplier.id)}>
                     {supplier.name}
                   </SelectItem>
                 ))}

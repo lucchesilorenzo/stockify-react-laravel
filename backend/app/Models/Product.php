@@ -8,9 +8,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
-    protected $keyType = 'string';
-    public $incrementing = false;
-
     /**
      * The attributes that are mass assignable.
      *

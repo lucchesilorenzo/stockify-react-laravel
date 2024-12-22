@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
@@ -12,7 +11,7 @@ class CategoryController extends Controller
      *
      * @return void
      */
-    public function getCategories(Request $request)
+    public function getCategories()
     {
         $categories = Category::all();
         return response()->json($categories);

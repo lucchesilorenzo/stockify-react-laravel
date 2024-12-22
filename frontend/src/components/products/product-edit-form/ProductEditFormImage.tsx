@@ -34,8 +34,7 @@ export default function ProductEditFormImage({
       <CardContent>
         <div className="space-y-2">
           <img
-            src={`${env.VITE_BASE_URL}/${product.image}`}
-            crossOrigin="anonymous"
+            src={`${env.VITE_BASE_URL}/storage/${product.image}`}
             alt="Product image"
             width="300"
             height="300"
