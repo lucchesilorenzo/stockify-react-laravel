@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { useUpdateSupplierRating } from "@/hooks/mutations/suppliers/useUpdateSupplierRating";
 
 type StarRatingProps = {
-  supplierId: string;
+  supplierId: number;
   initialRating?: number;
   readOnly?: boolean;
   size?: "sm" | "md" | "lg";

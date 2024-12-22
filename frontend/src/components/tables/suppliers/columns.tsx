@@ -155,8 +155,8 @@ export const columns: ColumnDef<SupplierWithOrderCount>[] = [
     },
   },
   {
-    accessorKey: "_count.orders",
-    id: "_count.orders",
+    accessorKey: "ordersCount",
+    id: "ordersCount",
     header: ({ column }) => {
       return (
         <Button
@@ -169,7 +169,7 @@ export const columns: ColumnDef<SupplierWithOrderCount>[] = [
       );
     },
     cell: ({ row }) => {
-      const count: number = row.getValue("_count.orders");
+      const count: number = row.getValue("ordersCount");
 
       return (
         <div className="flex items-center justify-center gap-2">
