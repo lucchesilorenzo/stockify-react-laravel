@@ -89,8 +89,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Analytics
     Route::prefix('analytics')->group(function () {
-        Route::get('/produts-by-category', [AnalyticsController::class, 'getProductsByCategory']);
-        Route::get('/monthly-inventory-value', [AnalyticsController::class, 'getMonthlyInventoryValue']);
+        Route::get('/products-by-category', [AnalyticsController::class, 'getProductsByCategory']);
+        Route::get('/monthly-inventory-values', [AnalyticsController::class, 'getMonthlyInventoryValue']);
         Route::get('/top-products', [AnalyticsController::class, 'getTopProducts']);
     });
 

@@ -10,14 +10,14 @@ class StringHelper
   /**
    * Generate a SKU based on the category name and product name.
    *
-   * @param string $category_name
-   * @param string $product_name
+   * @param string $categoryName
+   * @param string $productName
    * @return string
    */
-  public static function generateSKU(string $category_name, string $product_name): string
+  public static function generateSKU(string $categoryName, string $productName): string
   {
-    $categoryPart = strtoupper(substr($category_name, 0, 3));
-    $namePart = strtoupper(substr($product_name, 0, 3));
+    $categoryPart = strtoupper(substr($categoryName, 0, 3));
+    $namePart = strtoupper(substr($productName, 0, 3));
     $idPart = strtoupper(substr(Str::uuid()->toString(), -4));
 
     return "{$categoryPart}-{$namePart}-{$idPart}";

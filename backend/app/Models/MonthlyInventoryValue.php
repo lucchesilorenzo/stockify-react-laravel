@@ -15,4 +15,6 @@ class MonthlyInventoryValue extends Model
         'month',
         'total_value'
     ];
+
+    public $timestamps = false;
 }

@@ -1,5 +1,5 @@
 import { useQueries } from "@tanstack/react-query";
-import { fetchData } from "@/lib/api-client";
+import { fetchData, plainApi } from "@/lib/api-client";
 
 export function useAnalyticsData() {
   return useQueries({
@@ -19,7 +19,7 @@ export function useAnalyticsData() {
               color: string;
             }
           >;
-        }> => fetchData("/analytics/products-by-category"),
+        }> => fetchData("/analytics/products-by-category", plainApi),
       },
       {
         queryKey: ["analytics", "monthly-inventory-values"],
