@@ -26,12 +26,11 @@ class CustomerController extends Controller
 	{
 		try {
 			$customers = Customer::with([
-				'customerShipments' => function ($query) {
-					$query->with(['shipmentItems' => function ($query) {
-						$query->with('products:id,name,price');
-					}]);
+				'customerShipments.shipmentItems' => function ($query) {
+					$query->with('product:id,name,price');
 				}
-			])->get();
+			])
+				->get();
 
 			return response()->json($customers);
 		} catch (\Throwable $e) {
@@ -60,8 +59,8 @@ class CustomerController extends Controller
 			'city' => 'required|string|max:20',
 			'zip_code' => 'required|string|max:10',
 			'products' => 'required|array',
-			'products.*.product_id' => 'required|integer|exists:products,id',
-			'products.*.warehouse_id' => 'required|integer|exists:warehouses,id',
+			'products.*.product_id' => 'required|string|exists:products,id',
+			'products.*.warehouse_id' => 'required|string|exists:warehouses,id',
 			'products.*.name' => 'required|string',
 			'products.*.quantity' => 'required|integer',
 		]);

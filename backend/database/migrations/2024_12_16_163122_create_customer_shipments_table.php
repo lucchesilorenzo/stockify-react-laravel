@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('customer_shipments', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('customer_id')->constrained()->onDelete('cascade');
+            $table->uuid('id')->primary();
+            $table->foreignUuid('customer_id')->constrained()->onDelete('cascade');
             $table->string('status')->default('SHIPPED');
             $table->timestamps();
         });

@@ -36,13 +36,13 @@ class SupplierController extends Controller
 	{
 		// Validation
 		$rules = Validator::make($request->all(), ([
-			'name' => 'required|string|min:1|max:20',
+			'name' => 'required|string|max:20',
 			'email' => 'required|email|unique:users',
-			'phone' => 'required|string|min:1|max:15',
-			'address' => 'required|string|min:1|max:40',
-			'city' => 'required|string|min:1|max:20',
-			'zip_code' => 'required|string|min:1|max:10',
-			'website' => 'string|min:1|max:100',
+			'phone' => 'required|string|max:15',
+			'address' => 'required|string|max:40',
+			'city' => 'required|string|max:20',
+			'zip_code' => 'required|string|max:10',
+			'website' => 'nullable|string|max:100',
 		]));
 
 		// Check if validation fails
@@ -57,7 +57,10 @@ class SupplierController extends Controller
 		try {
 			Supplier::create($validatedData);
 		} catch (\Throwable $e) {
-			return response()->json(['message' => 'Failed to create supplier.'], 500);
+			return response()->json([
+				'message' => 'Failed to create supplier.',
+				'error' => $e->getMessage()
+			], 500);
 		}
 
 		// Create activity
@@ -70,7 +73,10 @@ class SupplierController extends Controller
 		try {
 			Activity::create($activity);
 		} catch (\Throwable $e) {
-			return response()->json(['message' => 'Failed to create activity.'], 500);
+			return response()->json([
+				'message' => 'Failed to create activity.',
+				'error' => $e->getMessage()
+			], 500);
 		}
 
 		return response()->json(['message' => 'Supplier created successfully.'], 201);

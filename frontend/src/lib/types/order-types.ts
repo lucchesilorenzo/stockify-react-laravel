@@ -3,10 +3,10 @@ import { Supplier } from "./supplier-types";
 import { User } from "./user-types";
 
 export type Order = {
-  id: number;
-  userId: number;
-  supplierId: number;
-  productId: number;
+  id: string;
+  userId: string;
+  supplierId: string;
+  productId: string;
   type: string;
   quantity: number;
   subtotal: number;

@@ -4,7 +4,7 @@ import { toast } from "sonner";
 
 type UpdateProduct = {
   formData: FormData;
-  productId: number;
+  productId: string;
 };
 
 export function useUpdateProduct({ productSlug }: { productSlug: string }) {

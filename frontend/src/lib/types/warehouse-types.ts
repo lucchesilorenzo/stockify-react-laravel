@@ -1,7 +1,7 @@
 import { Product } from "./product-types";
 
 export type Warehouse = {
-  id: number;
+  id: string;
   name: string;
   location: string;
   quantity: number;

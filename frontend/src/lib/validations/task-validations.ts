@@ -25,7 +25,7 @@ export const taskEditFormSchema = z.object({
   dueDate: z.coerce.date().optional(),
 });
 
-export const taskIdSchema = z.number();
+export const taskIdSchema = z.string().uuid();
 
 // TODO: impove typing for updateTaskField mutation
 export const taskFieldSchema = z.enum(["label", "status", "priority"]);

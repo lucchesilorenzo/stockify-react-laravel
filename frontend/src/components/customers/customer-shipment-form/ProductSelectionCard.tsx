@@ -47,7 +47,7 @@ export default function ProductSelectionCard({
     0,
   );
 
-  function handleProductSelection(productId: number) {
+  function handleProductSelection(productId: string) {
     setSelectedProductId(productId);
   }
 
@@ -64,7 +64,7 @@ export default function ProductSelectionCard({
       (p) => p.productId === product.id,
     );
     if (isProductAlreadySelected) {
-      setSelectedProductId(null);
+      setSelectedProductId("");
       toast.warning("Product already selected.");
       return;
     }
@@ -84,12 +84,12 @@ export default function ProductSelectionCard({
       },
     ];
 
-    setSelectedProductId(null);
+    setSelectedProductId("");
     setSelectedProducts(updatedProducts);
     setValue("products", updatedProducts);
   }
 
-  function handleProductQuantityChange(productId: number, quantity: number) {
+  function handleProductQuantityChange(productId: string, quantity: number) {
     // Get the selected product from the products array
     const product = products.find((p) => p.id === productId);
     if (!product) return;
@@ -111,18 +111,18 @@ export default function ProductSelectionCard({
     setValue("products", updatedProducts);
   }
 
-  function handleRemoveProduct(productId: number) {
+  function handleRemoveProduct(productId: string) {
     const updatedFilteredProducts = selectedProducts.filter(
       (p) => p.productId !== productId,
     );
 
-    setSelectedProductId(null);
+    setSelectedProductId("");
     setSelectedProducts(updatedFilteredProducts);
     setValue("products", updatedFilteredProducts);
   }
 
   function handleClearAll() {
-    setSelectedProductId(null);
+    setSelectedProductId("");
     setSelectedProducts([]);
     setValue("products", []);
   }
@@ -138,7 +138,7 @@ export default function ProductSelectionCard({
           <div className="flex items-center gap-2">
             <Select
               value={String(selectedProductId)}
-              onValueChange={(value) => handleProductSelection(Number(value))}
+              onValueChange={handleProductSelection}
             >
               <SelectTrigger id="product-select" className="w-[300px]">
                 <SelectValue placeholder="Select a product" />

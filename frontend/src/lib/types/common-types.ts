@@ -8,7 +8,7 @@ export type FormDialogActionType =
   | "generateTasks";
 
 export type MonthlyInventoryValue = {
-  id: number;
+  id: string;
   month: Date;
   totalValue: number;
 };

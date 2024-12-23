@@ -39,8 +39,8 @@ export const shippingFormSchema = z.object({
     .max(10, "Zip Code is too long."),
   products: z.array(
     z.object({
-      productId: z.number(),
-      warehouseId: z.number(),
+      productId: z.string().uuid(),
+      warehouseId: z.string().uuid(),
       name: z.string(),
       price: z.number(),
       quantity: z.number(),

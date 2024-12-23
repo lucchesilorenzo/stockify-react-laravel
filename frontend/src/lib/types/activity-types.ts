@@ -2,8 +2,8 @@ import { ProductEssentials } from "./product-types";
 import { User } from "@/lib/types/index";
 
 export type Activity = {
-  id: number;
-  userId: number;
+  id: string;
+  userId: string;
   activity: string;
   entity: string;
   product: string | null;

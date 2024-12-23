@@ -48,21 +48,20 @@ export function parseDates<T>(data: T): T {
 
 export function formatOrderId(order: Order) {
   const date = order.createdAt.toISOString().split("T")[0].replace(/-/g, "");
-  const numberPart = order.id;
+  const numberPart = order.id.slice(-4).toUpperCase();
 
   return `ORD-${date}-${numberPart}`;
 }
 
 export function formatShipmentId(shipment: CustomerShipmentWithItems) {
   const date = shipment.createdAt.toISOString().split("T")[0].replace(/-/g, "");
-  const numberPart = shipment.id;
+  const numberPart = shipment.id.slice(-4).toUpperCase();
 
   return `SHIP-${date}-${numberPart}`;
 }
 
-// TASK-1, not like the Next.js/Express way
 export function formatTaskId(taskId: Task["id"]) {
-  const numberPart = taskId;
+  const numberPart = taskId.slice(-4).toUpperCase();
 
   return `TASK-${numberPart}`;
 }

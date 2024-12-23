@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const productIdSchema = z.number();
+export const productIdSchema = z.string().uuid();
 
 export const productEditFormSchema = z.object({
   description: z.string().trim().max(200, "Description is too long."),

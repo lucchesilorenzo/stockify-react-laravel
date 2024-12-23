@@ -1,7 +1,7 @@
 import { Product } from "./product-types";
 
 export type Customer = {
-  id: number;
+  id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -20,8 +20,8 @@ export type CustomerEssentials = Omit<
 >;
 
 export type CustomerShipment = {
-  id: number;
-  customerId: number;
+  id: string;
+  customerId: string;
   status: string;
   createdAt: Date;
   updatedAt: Date;
@@ -30,16 +30,16 @@ export type CustomerShipment = {
 };
 
 export type ShipmentItem = {
-  id: number;
-  productId: number;
-  customerShipmentId: number;
+  id: string;
+  productId: string;
+  customerShipmentId: string;
   quantity: number;
   product?: Product;
   customerShipment?: CustomerShipment;
 };
 
 export type CustomerWithCustomerShipment = {
-  id: number;
+  id: string;
   firstName: string;
   lastName: string;
   email: string;
@@ -50,15 +50,15 @@ export type CustomerWithCustomerShipment = {
   createdAt: Date;
   updatedAt: Date;
   customerShipments: {
-    id: number;
-    customerId: number;
+    id: string;
+    customerId: string;
     status: string;
     createdAt: Date;
     updatedAt: Date;
     shipmentItems: {
-      id: number;
-      productId: number;
-      customerShipmentId: number;
+      id: string;
+      productId: string;
+      customerShipmentId: string;
       quantity: number;
       product: {
         name: string;
@@ -69,15 +69,15 @@ export type CustomerWithCustomerShipment = {
 };
 
 export type CustomerShipmentWithItems = {
-  id: number;
-  customerId: number;
+  id: string;
+  customerId: string;
   status: string;
   createdAt: Date;
   updatedAt: Date;
   shipmentItems: {
-    id: number;
-    productId: number;
-    customerShipmentId: number;
+    id: string;
+    productId: string;
+    customerShipmentId: string;
     quantity: number;
     product: {
       name: string;
@@ -87,8 +87,8 @@ export type CustomerShipmentWithItems = {
 };
 
 export type CustomerSelectedProduct = {
-  productId: number;
-  warehouseId: number;
+  productId: string;
+  warehouseId: string;
   name: string;
   price: number;
   quantity: number;

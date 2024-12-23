@@ -90,16 +90,16 @@ class OrderController extends Controller
 	public function createOrder(Request $request): JsonResponse
 	{
 		// Validation
-		$rules = Validator::make($request->all(), ([
+		$rules = Validator::make($request->all(), [
 			'name' => 'required|string|max:20',
-			'category_id' => 'required|exists:categories,id',
-			'warehouse_id' => 'required|exists:warehouses,id',
-			'supplier_id' => 'required|exists:suppliers,id',
+			'category_id' => 'required|string|exists:categories,id',
+			'warehouse_id' => 'required|string|exists:warehouses,id',
+			'supplier_id' => 'required|string|exists:suppliers,id',
 			'vat_rate' => 'required|string',
 			'price' => 'required|numeric|max:99999',
 			'quantity' => 'required|integer|lte:max_quantity',
 			'max_quantity' => 'required|integer',
-		]));
+		]);
 
 		// Check if validation fails
 		if ($rules->fails()) {
@@ -108,9 +108,6 @@ class OrderController extends Controller
 
 		// Get validated data
 		$validatedOrder = $rules->validated();
-
-		$validatedOrder['category_id'] = (int) $validatedOrder['category_id'];
-		$validatedOrder['warehouse_id'] = (int) $validatedOrder['warehouse_id'];
 
 		// Check if there is enough space in the warehouse
 		$warehouse = Warehouse::findOrFail($validatedOrder['warehouse_id']);
@@ -140,7 +137,10 @@ class OrderController extends Controller
 			if ($e->getCode() === '23000') {
 				return response()->json(['message' => 'Product already exists.'], 400);
 			}
-			return response()->json(['message' => 'Failed to create product.'], 500);
+			return response()->json([
+				'message' => 'Failed to create product.',
+				'error' => $e->getMessage()
+			], 500);
 		}
 
 		// Calculate order details
@@ -151,7 +151,7 @@ class OrderController extends Controller
 
 		$orderDetails = [
 			'product_id' => $product->id,
-			'supplier_id' => (int) $validatedOrder['supplier_id'],
+			'supplier_id' => $validatedOrder['supplier_id'],
 			'user_id' => auth()->user()->id,
 			'type' => 'NEW',
 			'quantity' => $validatedOrder['quantity'],
@@ -210,8 +210,8 @@ class OrderController extends Controller
 	{
 		// Validation
 		$rules = Validator::make($request->all(), ([
-			'product_id' => 'required|exists:products,id',
-			'supplier_id' => 'required|exists:suppliers,id',
+			'product_id' => 'required|string|exists:products,id',
+			'supplier_id' => 'required|string|exists:suppliers,id',
 			'quantity' => 'required|integer',
 		]));
 
@@ -222,9 +222,6 @@ class OrderController extends Controller
 
 		// Get validated order data
 		$validatedRestockOrder = $rules->validated();
-
-		$validatedRestockOrder['product_id'] = (int) $validatedRestockOrder['product_id'];
-		$validatedRestockOrder['supplier_id'] = (int) $validatedRestockOrder['supplier_id'];
 
 		// Check if product exists
 		$product = Product::findOrFail($validatedRestockOrder['product_id']);
@@ -243,9 +240,13 @@ class OrderController extends Controller
 
 		switch (true) {
 			case $orderedQuantity <= 0:
-				return response()->json(['message' => 'The selected quantity must be at least 1.'], 400);
+				return response()->json([
+					'message' => 'The selected quantity must be at least 1.'
+				], 400);
 			case $currentQuantity >= $maxQuantity:
-				return response()->json(['message' => 'You cannot order more units of this product. The maximum quantity is already reached.'], 400);
+				return response()->json([
+					'message' => 'You cannot order more units of this product. The maximum quantity is already reached.'
+				], 400);
 			case $orderedQuantity + $currentQuantity > $maxQuantity:
 				return response()->json([
 					'message' => "The total quantity cannot exceed {$maxQuantity}. Remaining: " . ($maxQuantity - $currentQuantity) . "."

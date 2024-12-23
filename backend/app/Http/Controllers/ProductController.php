@@ -50,8 +50,7 @@ class ProductController extends Controller
         ->where('quantity', '>', 0)
         ->whereHas('orders', function ($query) {
           $query->where('status', 'DELIVERED');
-        })
-        ->get();
+        })->get();
 
       return response()->json($availableProducts);
     } catch (\Throwable $e) {
@@ -115,10 +114,10 @@ class ProductController extends Controller
     // Validation
     $rules = Validator::make($request->all(), [
       'description' => 'nullable|string|max:200',
-      'price' => 'required|numeric|min:1|max:99999',
-      'max_quantity' => 'required|integer|min:1|max:500',
-      'category_id' => 'nullable|exists:categories,id',
-      'warehouse_id' => 'nullable|exists:warehouses,id',
+      'price' => 'required|numeric|max:99999',
+      'max_quantity' => 'required|integer|max:500',
+      'category_id' => 'nullable|string|exists:categories,id',
+      'warehouse_id' => 'nullable|string|exists:warehouses,id',
       'image' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:2048',
     ]);
 

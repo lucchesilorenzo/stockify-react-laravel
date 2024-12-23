@@ -14,10 +14,10 @@ type CustomerProviderProps = {
 type TCustomerContext = {
   selectedCustomerId: Customer["id"] | null;
   selectedProducts: CustomerSelectedProduct[];
-  selectedProductId: Product["id"] | null;
+  selectedProductId: Product["id"];
   selectedShipmentId: CustomerShipmentWithItems["id"] | null;
   setSelectedProducts: (products: CustomerSelectedProduct[]) => void;
-  setSelectedProductId: (productId: Product["id"] | null) => void;
+  setSelectedProductId: (productId: Product["id"]) => void;
   handleSelectCustomer: (customerId: Customer["id"] | null) => void;
   handleSelectShipment: (
     shipmentId: CustomerShipmentWithItems["id"] | null,
@@ -27,21 +27,19 @@ type TCustomerContext = {
 export const CustomerContext = createContext<TCustomerContext | null>(null);
 
 export default function CustomerProvider({ children }: CustomerProviderProps) {
-  const [selectedCustomerId, setSelectedCustomer] = useState<
+  const [selectedCustomerId, setSelectedCustomerId] = useState<
     Customer["id"] | null
   >(null);
   const [selectedProducts, setSelectedProducts] = useState<
     CustomerSelectedProduct[]
   >([]);
-  const [selectedProductId, setSelectedProductId] = useState<
-    Product["id"] | null
-  >(null);
+  const [selectedProductId, setSelectedProductId] = useState("");
   const [selectedShipmentId, setSelectedShipmentId] = useState<
     CustomerShipmentWithItems["id"] | null
   >(null);
 
   function handleSelectCustomer(customerId: Customer["id"] | null) {
-    setSelectedCustomer(customerId);
+    setSelectedCustomerId(customerId);
   }
 
   function handleSelectShipment(

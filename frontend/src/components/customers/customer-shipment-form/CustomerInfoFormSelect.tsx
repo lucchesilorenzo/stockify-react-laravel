@@ -24,14 +24,14 @@ export default function CustomerInfoFormSelect({
   onClearAll,
 }: CustomerInfoFormSelectProps) {
   const { selectedCustomerId, handleSelectCustomer } = useCustomer();
-
+  console.log(customers);
   return (
     <div className="flex items-center gap-x-4">
       {customers.length > 0 && (
         <>
           <Select
-            value={String(selectedCustomerId)}
-            onValueChange={(value) => handleSelectCustomer(Number(value))}
+            value={selectedCustomerId ?? ""}
+            onValueChange={handleSelectCustomer}
           >
             <SelectTrigger id="customer-select" className="w-full">
               <SelectValue placeholder="Select existing customer" />
@@ -39,7 +39,7 @@ export default function CustomerInfoFormSelect({
             <SelectContent>
               <ScrollArea className="max-h-60 overflow-y-auto">
                 {customers.map((customer) => (
-                  <SelectItem key={customer.id} value={String(customer.id)}>
+                  <SelectItem key={customer.id} value={customer.id}>
                     {`${customer.firstName} ${customer.lastName} (${customer.email})`}
                   </SelectItem>
                 ))}
