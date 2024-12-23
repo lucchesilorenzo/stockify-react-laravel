@@ -35,7 +35,7 @@ export const supplierFormSchema = z.object({
   website: z.string().trim().max(100, "Website is too long.").optional(),
 });
 
-export const supplierIdSchema = z.string().cuid();
+export const supplierIdSchema = z.number();
 export const supplierRatingSchema = z.number().min(1).max(5);
 
 // Types

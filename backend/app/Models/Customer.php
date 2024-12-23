@@ -29,6 +29,6 @@ class Customer extends Model
      */
     public function customerShipments(): HasMany
     {
-        return $this->hasMany(Shipment::class);
+        return $this->hasMany(CustomerShipment::class);
     }
 }

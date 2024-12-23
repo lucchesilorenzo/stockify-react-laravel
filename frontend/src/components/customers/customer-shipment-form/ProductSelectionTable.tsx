@@ -17,8 +17,8 @@ import { formatCurrency } from "@/lib/utils";
 type ProductSelectionTableProps = {
   products: CustomerSelectedProduct[];
   totalPrice: number;
-  onProductQuantityChange: (productId: string, quantity: number) => void;
-  onRemoveProduct: (productId: string) => void;
+  onProductQuantityChange: (productId: number, quantity: number) => void;
+  onRemoveProduct: (productId: number) => void;
 };
 
 export default function ProductSelectionTable({

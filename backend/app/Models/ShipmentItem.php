@@ -18,6 +18,8 @@ class ShipmentItem extends Model
         'quantity',
     ];
 
+    public $timestamps = false;
+
     /**
      * Get the product that owns the shipment item.
      *

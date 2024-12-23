@@ -63,7 +63,7 @@ export const restockOrderFormSchema = z.object({
     .min(1, "Quantity is required."),
 });
 
-export const orderIdSchema = z.string().cuid();
+export const orderIdSchema = z.number();
 
 // Types
 export type TOrderFormSchema = z.infer<typeof orderFormSchema>;

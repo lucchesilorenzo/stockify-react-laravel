@@ -12,12 +12,12 @@ type CustomerProviderProps = {
 };
 
 type TCustomerContext = {
-  selectedCustomer: Customer["id"] | null;
+  selectedCustomerId: Customer["id"] | null;
   selectedProducts: CustomerSelectedProduct[];
   selectedProductId: Product["id"] | null;
   selectedShipmentId: CustomerShipmentWithItems["id"] | null;
   setSelectedProducts: (products: CustomerSelectedProduct[]) => void;
-  setSelectedProductId: (productId: Product["id"]) => void;
+  setSelectedProductId: (productId: Product["id"] | null) => void;
   handleSelectCustomer: (customerId: Customer["id"] | null) => void;
   handleSelectShipment: (
     shipmentId: CustomerShipmentWithItems["id"] | null,
@@ -27,7 +27,7 @@ type TCustomerContext = {
 export const CustomerContext = createContext<TCustomerContext | null>(null);
 
 export default function CustomerProvider({ children }: CustomerProviderProps) {
-  const [selectedCustomer, setSelectedCustomer] = useState<
+  const [selectedCustomerId, setSelectedCustomer] = useState<
     Customer["id"] | null
   >(null);
   const [selectedProducts, setSelectedProducts] = useState<
@@ -53,7 +53,7 @@ export default function CustomerProvider({ children }: CustomerProviderProps) {
   return (
     <CustomerContext.Provider
       value={{
-        selectedCustomer,
+        selectedCustomerId,
         selectedProducts,
         selectedProductId,
         selectedShipmentId,

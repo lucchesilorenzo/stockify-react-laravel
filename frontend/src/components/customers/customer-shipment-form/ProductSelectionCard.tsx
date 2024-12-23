@@ -37,8 +37,8 @@ export default function ProductSelectionCard({
 }: ProductSelectionCardProps) {
   const {
     selectedProductId,
-    setSelectedProductId,
     selectedProducts,
+    setSelectedProductId,
     setSelectedProducts,
   } = useCustomer();
 
@@ -47,7 +47,7 @@ export default function ProductSelectionCard({
     0,
   );
 
-  function handleProductSelection(productId: string) {
+  function handleProductSelection(productId: number) {
     setSelectedProductId(productId);
   }
 
@@ -64,7 +64,7 @@ export default function ProductSelectionCard({
       (p) => p.productId === product.id,
     );
     if (isProductAlreadySelected) {
-      setSelectedProductId("");
+      setSelectedProductId(null);
       toast.warning("Product already selected.");
       return;
     }
@@ -84,12 +84,12 @@ export default function ProductSelectionCard({
       },
     ];
 
-    setSelectedProductId("");
+    setSelectedProductId(null);
     setSelectedProducts(updatedProducts);
     setValue("products", updatedProducts);
   }
 
-  function handleProductQuantityChange(productId: string, quantity: number) {
+  function handleProductQuantityChange(productId: number, quantity: number) {
     // Get the selected product from the products array
     const product = products.find((p) => p.id === productId);
     if (!product) return;
@@ -111,18 +111,18 @@ export default function ProductSelectionCard({
     setValue("products", updatedProducts);
   }
 
-  function handleRemoveProduct(productId: string) {
+  function handleRemoveProduct(productId: number) {
     const updatedFilteredProducts = selectedProducts.filter(
       (p) => p.productId !== productId,
     );
 
-    setSelectedProductId("");
+    setSelectedProductId(null);
     setSelectedProducts(updatedFilteredProducts);
     setValue("products", updatedFilteredProducts);
   }
 
   function handleClearAll() {
-    setSelectedProductId("");
+    setSelectedProductId(null);
     setSelectedProducts([]);
     setValue("products", []);
   }
@@ -137,8 +137,8 @@ export default function ProductSelectionCard({
         <div className="mb-4 space-y-1">
           <div className="flex items-center gap-2">
             <Select
-              value={selectedProductId}
-              onValueChange={handleProductSelection}
+              value={String(selectedProductId)}
+              onValueChange={(value) => handleProductSelection(Number(value))}
             >
               <SelectTrigger id="product-select" className="w-[300px]">
                 <SelectValue placeholder="Select a product" />
@@ -146,7 +146,7 @@ export default function ProductSelectionCard({
               <SelectContent>
                 <ScrollArea className="max-h-60 overflow-y-auto">
                   {products.map((product) => (
-                    <SelectItem key={product.id} value={product.id}>
+                    <SelectItem key={product.id} value={String(product.id)}>
                       {product.name} - {formatCurrency(product.price)}
                       {product.quantity <= 10 && (
                         <>

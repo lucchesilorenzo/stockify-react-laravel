@@ -65,7 +65,7 @@ export default function CustomerShipmentForm({
   function handleClearAll() {
     reset();
     handleSelectCustomer(null);
-    setSelectedProductId("");
+    setSelectedProductId(null);
     setSelectedProducts([]);
   }
 
