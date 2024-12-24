@@ -24,7 +24,7 @@ export default function CustomerInfoFormSelect({
   onClearAll,
 }: CustomerInfoFormSelectProps) {
   const { selectedCustomerId, handleSelectCustomer } = useCustomer();
-  console.log(customers);
+
   return (
     <div className="flex items-center gap-x-4">
       {customers.length > 0 && (

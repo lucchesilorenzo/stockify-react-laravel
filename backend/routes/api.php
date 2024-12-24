@@ -65,7 +65,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Customers
     Route::prefix('customers')->group(function () {
         Route::post('/shipment', [CustomerController::class, 'createCustomerShipment']);
-        Route::post('/', [CustomerController::class, 'createCustomer']);
+        Route::post('/', [CustomerController::class, 'createCustomers']);
         Route::get('/', [CustomerController::class, 'getCustomers']);
         Route::patch('/{customer}', [CustomerController::class, 'updateCustomer']);
     });

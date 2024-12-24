@@ -94,14 +94,12 @@ class CustomerController extends Controller
 
 		// Create new activity if customer was created
 		if ($newCustomer) {
-			$activity = ([
-				'activity' => 'CREATED',
-				'entity' => 'Customer',
-				'user_id' => auth()->user()->id,
-			]);
-
 			try {
-				Activity::create($activity);
+				Activity::create([
+					'activity' => 'CREATED',
+					'entity' => 'Customer',
+					'user_id' => auth()->user()->id,
+				]);
 			} catch (\Throwable $e) {
 				return response()->json(['message' => 'Failed to create activity.'], 500);
 			}
@@ -204,19 +202,133 @@ class CustomerController extends Controller
 		}
 
 		// Create new activity
-		$activity = ([
-			'activity' => 'CREATED',
-			'entity' => 'Shipment',
-			'product' => collect($validatedShipment['products'])->map(fn($p) => $p['name'])->implode(', '),
-			'user_id' => auth()->user()->id,
-		]);
-
 		try {
-			Activity::create($activity);
+			Activity::create([
+				'activity' => 'CREATED',
+				'entity' => 'Shipment',
+				'product' => collect($validatedShipment['products'])->map(fn($p) => $p['name'])->implode(', '),
+				'user_id' => auth()->user()->id,
+			]);
 		} catch (\Throwable $e) {
 			return response()->json(['message' => 'Failed to create activity.'], 500);
 		}
 
 		return response()->json(['message' => 'Shipment created successfully.'], 200);
+	}
+
+	/**
+	 * Create customers.
+	 *
+	 * @param Request $request
+	 * @return JsonResponse
+	 */
+	public function createCustomers(Request $request): JsonResponse
+	{
+		// Validation
+		$rules = Validator::make($request->all(), [
+			// '*.' is used to validate each field in an array of objects
+			'*.first_name' => 'required|string|max:20',
+			'*.last_name' => 'required|string|max:20',
+			'*.email' => 'required|email',
+			'*.phone' => 'required|string|max:15',
+			'*.address' => 'required|string|max:40',
+			'*.city' => 'required|string|max:20',
+			'*.zip_code' => 'required|string|max:10',
+		]);
+
+		if ($rules->fails()) {
+			return response()->json([
+				'message' => 'Invalid CSV file format.',
+			], 400);
+		}
+
+		$validatedCustomerData = $rules->validated();
+
+		// Create customers
+		try {
+			foreach ($validatedCustomerData as $customer) {
+				if (!str_starts_with($customer['phone'], '+')) {
+					$customer['phone'] = '+' . $customer['phone'];
+				}
+
+				Customer::create($customer);
+			}
+		} catch (QueryException $e) {
+			if ($e->getCode() === 23000) {
+				return response()->json([
+					'message' => 'Customer already exists.',
+					'error' => $e->getMessage()
+				], 400);
+			}
+			return response()->json([
+				'message' => 'Failed to create customer.',
+				'error' => $e->getMessage()
+			], 500);
+		}
+
+		// Create activity
+		try {
+			Activity::create([
+				'activity' => 'CREATED',
+				'entity' => 'Customer',
+				'user_id' => auth()->user()->id,
+			]);
+		} catch (\Throwable $e) {
+			return response()->json(['message' => 'Failed to create activity.'], 500);
+		}
+
+		return response()->json(['message' => 'Customers created successfully.'], 200);
+	}
+
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param Request $request
+	 * @param Customer $customer
+	 * @return JsonResponse
+	 */
+	public function updateCustomer(Request $request, Customer $customer): JsonResponse
+	{
+		// Validation
+		$rules = Validator::make($request->all(), [
+			'first_name' => 'required|string|max:20',
+			'last_name' => 'required|string|max:20',
+			'email' => 'required|email',
+			'phone' => 'required|string|max:15',
+			'address' => 'required|string|max:40',
+			'city' => 'required|string|max:20',
+			'zip_code' => 'required|string|max:10',
+		]);
+
+		if ($rules->fails()) {
+			return response()->json([
+				'message' => 'Invalid customer data.',
+			], 400);
+		}
+
+		$validatedCustomer = $rules->validated();
+
+		// Update customer	
+		try {
+			$customer->update($validatedCustomer);
+		} catch (\Throwable $e) {
+			return response()->json([
+				'message' => 'Failed to update customer.',
+				'error' => $e->getMessage()
+			], 500);
+		}
+
+		// Create activity
+		try {
+			Activity::create([
+				'activity' => 'UPDATED',
+				'entity' => 'Customer',
+				'user_id' => auth()->user()->id,
+			]);
+		} catch (\Throwable $e) {
+			return response()->json(['message' => 'Failed to create activity.'], 500);
+		}
+
+		return response()->json(['message' => 'Customer updated successfully.'], 200);
 	}
 }
