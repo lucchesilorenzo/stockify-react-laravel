@@ -4,7 +4,7 @@ import { toast } from "sonner";
 
 export function useLogOut() {
   return useMutation({
-    mutationFn: () => postData("/logout"),
+    mutationFn: () => postData("/auth/logout"),
     onError: (error) => {
       toast.error(error.message);
     },

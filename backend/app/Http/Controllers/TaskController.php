@@ -5,252 +5,265 @@ namespace App\Http\Controllers;
 use App\Models\Activity;
 use App\Models\Task;
 use App\Prompts\TaskPrompt;
-use Cloudstudio\Ollama\Facades\Ollama;
+use ArdaGnsrn\Ollama\Ollama;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return void
-     */
-    public function getTasks()
-    {
-        $tasks = Task::with('user:id,first_name,last_name')->get();
-        return response()->json($tasks);
-    }
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return JsonResponse
+	 */
+	public function getTasks(): JsonResponse
+	{
+		try {
+			$tasks = Task::with('user:id,first_name,last_name')->get();
+			return response()->json($tasks);
+		} catch (\Throwable $e) {
+			return response()->json(['message' => 'Failed to get tasks.'], 500);
+		}
+	}
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return void
-     */
-    public function createTask(Request $request)
-    {
-        // Validation
-        $rules = Validator::make($request->all(), ([
-            'title' => 'required|string|max:100',
-            'status' => 'required',
-            'priority' => 'required',
-            'label' => 'required',
-            'due_date' => 'required|date',
-        ]));
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @param Request $request
+	 * @return JsonResponse
+	 */
+	public function createTask(Request $request): JsonResponse
+	{
+		// Validation
+		$rules = Validator::make($request->all(), [
+			'title' => 'required|string|max:100',
+			'status' => 'required',
+			'priority' => 'required',
+			'label' => 'required',
+			'due_date' => 'required|date',
+		]);
 
-        // Check if validation fails
-        if ($rules->fails()) {
-            return response()->json(['message' => 'Invalid task data.'], 400);
-        }
+		// Check if validation fails
+		if ($rules->fails()) {
+			return response()->json(['message' => 'Invalid task data.'], 400);
+		}
 
-        // Get validated data
-        $validatedData = $rules->validated();
+		// Get validated data
+		$validatedData = $rules->validated();
 
-        // Add user ID
-        $validatedData['user_id'] = auth()->user()->id;
+		// Add user ID
+		$validatedData['user_id'] = auth()->user()->id;
 
-        // Create task
-        try {
-            Task::create($validatedData);
-        } catch (\Throwable $e) {
-            return response()->json(['message' => 'Failed to create task.'], 500);
-        }
+		// Create task
+		try {
+			Task::create($validatedData);
+		} catch (\Throwable $e) {
+			return response()->json(['message' => 'Failed to create task.'], 500);
+		}
 
-        // Create a new activity
-        $activity = [
-            'activity' => 'CREATED',
-            'entity' => 'TASK',
-            'user_id' => auth()->user()->id,
-        ];
+		// Create a new activity
+		try {
+			Activity::create([
+				'activity' => 'CREATED',
+				'entity' => 'Task',
+				'user_id' => auth()->user()->id,
+			]);
+		} catch (\Throwable $e) {
+			return response()->json(['message' => 'Failed to create activity.'], 500);
+		}
 
-        try {
-            Activity::create($activity);
-        } catch (\Throwable $e) {
-            return response()->json(['message' => 'Failed to create activity.'], 500);
-        }
+		return response()->json(['message' => 'Task created successfully.'], 201);
+	}
 
-        return response()->json(['message' => 'Task created successfully.'], 201);
-    }
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param Request $request
+	 * @param Task $task
+	 * @return JsonResponse
+	 */
+	public function updateTask(Request $request, Task $task): JsonResponse
+	{
+		// Validation
+		$rules = Validator::make($request->all(), [
+			'title' => 'string|max:100',
+			'due_date' => 'date',
+		]);
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param Task $task
-     * @return void
-     */
-    public function updateTask(Request $request, Task $task)
-    {
-        // Validation
-        $rules = Validator::make($request->all(), ([
-            'title' => 'string|max:100',
-            'due_date' => 'date',
-        ]));
+		// Check if validation fails
+		if ($rules->fails()) {
+			return response()->json(['message' => 'Invalid task data.'], 400);
+		}
 
-        // Check if validation fails
-        if ($rules->fails()) {
-            return response()->json(['message' => 'Invalid task data.'], 400);
-        }
+		// Get validated data
+		$validatedData = $rules->validated();
 
-        // Get validated data
-        $validatedData = $rules->validated();
+		// Update task
+		try {
+			$task->update($validatedData);
+		} catch (\Throwable $e) {
+			return response()->json(['message' => 'Failed to update task.'], 500);
+		}
 
-        // Update task
-        try {
-            $task->update($validatedData);
-        } catch (\Throwable $e) {
-            return response()->json(['message' => 'Failed to update task.'], 500);
-        }
+		// Create a new activity
+		try {
+			Activity::create([
+				'activity' => 'UPDATED',
+				'entity' => 'Task',
+				'user_id' => auth()->user()->id,
+			]);
+		} catch (\Throwable $e) {
+			return response()->json(['message' => 'Failed to create activity.'], 500);
+		}
 
-        // Create a new activity
-        $activity = [
-            'activity' => 'UPDATED',
-            'entity' => 'Task',
-            'user_id' => auth()->user()->id,
-        ];
+		return response()->json(['message' => 'Task updated successfully.'], 200);
+	}
 
-        try {
-            Activity::create($activity);
-        } catch (\Throwable $e) {
-            return response()->json(['message' => 'Failed to create activity.'], 500);
-        }
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param Request $request
+	 * @param Task $task
+	 * @return JsonResponse
+	 */
+	public function updateTaskField(Request $request, Task $task)
+	{
+		// Validation
+		$rules = Validator::make($request->all(), [
+			'field' => 'required|in:status,priority,label',
+			'value' => 'required|string',
+		]);
 
-        return response()->json(['message' => 'Task updated successfully.'], 200);
-    }
+		// Check if validation fails
+		if ($rules->fails()) {
+			return response()->json(['message' => 'Invalid task data.'], 400);
+		}
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param Request $request
-     * @param Task $task
-     * @return void
-     */
-    public function updateTaskField(Request $request, Task $task)
-    {
-        // Validation
-        $rules = Validator::make($request->all(), ([
-            'field' => 'required|in:status,priority,label',
-            'value' => 'required|string',
-        ]));
+		// Get validated data
+		$validatedData = $rules->validated();
 
-        // Check if validation fails
-        if ($rules->fails()) {
-            return response()->json(['message' => 'Invalid task data.'], 400);
-        }
+		// Extract field and value
+		$field = $validatedData['field'];
+		$value = $validatedData['value'];
 
-        // Get validated data
-        $validatedData = $rules->validated();
+		// Verify if value is in valid values
+		$validValues = [
+			'status' => ['BACKLOG', 'TO_DO', 'IN_PROGRESS', 'DONE', 'CANCELED'],
+			'priority' => ['LOW', 'MEDIUM', 'HIGH'],
+			'label' => ['INVENTORY', 'ORDER', 'SHIPPING', 'QUALITY', 'CUSTOMER', 'MAINTENANCE'],
+		];
 
-        // Extract field and value
-        $field = $validatedData['field'];
-        $value = $validatedData['value'];
+		// Check if value is in valid values
+		if (!in_array($value, $validValues[$field])) {
+			return response()->json(['message' => 'Invalid value.'], 400);
+		}
 
-        // Verify if value is in valid values
-        $validValues = [
-            'status' => ['BACKLOG', 'TO_DO', 'IN_PROGRESS', 'DONE', 'CANCELED'],
-            'priority' => ['LOW', 'MEDIUM', 'HIGH'],
-            'label' => ['INVENTORY', 'ORDER', 'SHIPPING', 'QUALITY', 'CUSTOMER', 'MAINTENANCE'],
-        ];
+		// Update task
+		try {
+			$task->update([$field => $value]);
+		} catch (\Throwable $e) {
+			return response()->json(['message' => 'Failed to update task.'], 500);
+		}
 
-        // Check if value is in valid values
-        if (!in_array($value, $validValues[$field])) {
-            return response()->json(['message' => 'Invalid value.'], 400);
-        }
+		// Create a new activity
+		try {
+			Activity::create([
+				'activity' => 'UPDATED',
+				'entity' => 'Task',
+				'user_id' => auth()->user()->id,
+			]);
+		} catch (\Throwable $e) {
+			return response()->json(['message' => 'Failed to create activity.'], 500);
+		}
 
-        // Update task
-        try {
-            $task->update([$field => $value]);
-        } catch (\Throwable $e) {
-            return response()->json(['message' => 'Failed to update task.'], 500);
-        }
+		return response()->json(['message' => 'Task updated successfully.'], 200);
+	}
 
-        // Create a new activity
-        $activity = [
-            'activity' => 'UPDATED',
-            'entity' => 'Task',
-            'user_id' => auth()->user()->id,
-        ];
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param Task $task
+	 * @return JsonResponse
+	 */
+	public function deleteTask(Task $task): JsonResponse
+	{
+		// Delete task
+		try {
+			$task->delete();
+		} catch (\Throwable $e) {
+			return response()->json(['message' => 'Failed to delete task.'], 500);
+		}
 
-        try {
-            Activity::create($activity);
-        } catch (\Throwable $e) {
-            return response()->json(['message' => 'Failed to create activity.'], 500);
-        }
+		// Create a new activity
+		try {
+			Activity::create([
+				'activity' => 'DELETED',
+				'entity' => 'Task',
+				'user_id' => auth()->user()->id,
+			]);
+		} catch (\Throwable $e) {
+			return response()->json(['message' => 'Failed to create activity.'], 500);
+		}
 
-        return response()->json(['message' => 'Task updated successfully.'], 200);
-    }
+		return response()->json(['message' => 'Task deleted successfully.'], 200);
+	}
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param Task $task
-     * @return void
-     */
-    public function deleteTask(Task $task)
-    {
-        // Delete task
-        try {
-            $task->delete();
-        } catch (\Throwable $e) {
-            return response()->json(['message' => 'Failed to delete task.'], 500);
-        }
+	/**
+	 * Generate tasks.
+	 *
+	 * @param Request $request
+	 * @return JsonResponse
+	 */
+	public function generateTasks(Request $request): JsonResponse
+	{
+		// Validation
+		$rules = Validator::make($request->all(), [
+			'prompt' => 'required|string|max:1000',
+			'num_tasks' => 'required|integer|min:1',
+		]);
 
-        // Create a new activity
-        $activity = [
-            'activity' => 'DELETED',
-            'entity' => 'Task',
-            'user_id' => auth()->user()->id,
-        ];
+		// Check if validation fails
+		if ($rules->fails()) {
+			return response()->json(['message' => 'Invalid task data.'], 400);
+		}
 
-        try {
-            Activity::create($activity);
-        } catch (\Throwable $e) {
-            return response()->json(['message' => 'Failed to create activity.'], 500);
-        }
+		// Get validated data
+		$validatedData = $rules->validated();
 
-        return response()->json(['message' => 'Task deleted successfully.'], 200);
-    }
+		$numTasks = $validatedData['num_tasks'] ?? 5;
+		$description = $validatedData['prompt'];
+		$talkStructure = TaskPrompt::getTaskStructure();
+		$exampleOutput = TaskPrompt::getExampleOutput();
 
-    // TODO
-    /**
-     * Generate tasks
-     *
-     * @return void
-     */
-    public function generateTasks()
-    {
-        // Validation
-        $rules = Validator::make(request()->all(), ([
-            'prompt' => 'required|string|max:1000',
-            'num_tasks' => 'required|integer',
-        ]));
+		$finalPrompt = "{$description}. Generate {$numTasks} tasks. {$talkStructure} {$exampleOutput} Return only a pure JSON array of tasks, without extra formatting.";
 
-        // Check if validation fails
-        if ($rules->fails()) {
-            return response()->json(['message' => 'Invalid task data.'], 400);
-        }
+		$client = Ollama::client();
 
-        // Get validated data
-        $validatedData = $rules->validated();
+		try {
+			$res = $client->chat()->create([
+				'model' => 'qwen2.5-coder:1.5b',
+				'messages' => [
+					['role' => 'user', 'content' => $finalPrompt],
+				],
+				'format' => 'json',
+			]);
 
-        $numTasks = $validatedData['num_tasks'] || 5;
-        $description = $validatedData['prompt'];
-        $talkStructure = TaskPrompt::getTaskStructure();
-        $exampleOutput = TaskPrompt::getExampleOutput();
+			$decodedRes = json_decode($res->message->content, true);
 
-        $finalPrompt = "{$description}. Generate {$numTasks} tasks. {$talkStructure} {$exampleOutput} Return only a pure JSON array of tasks, without extra formatting.";
+			foreach ($decodedRes['tasks'] as $task) {
+				Http::withHeaders([
+					'Authorization' => $request->header('Authorization')
+				])->post(env('APP_URL') . '/api/tasks', $task);
+			}
+		} catch (\Throwable $e) {
+			return response()->json([
+				'message' => 'Failed to generate tasks.',
+				'error' => $e->getMessage(),
+			], 500);
+		}
 
-        try {
-            $response = Ollama::ask([
-                'messages' => ['role' => 'user', 'content' => $finalPrompt],
-                'format' => 'json',
-            ]);
-            return response()->json(['response' => $response]);
-        } catch (\Throwable $e) {
-            return response()->json([
-                'message' => 'Failed to generate tasks.',
-                'error' => $e->getMessage(),
-            ], 500);
-        }
-    }
+		return response()->json(['message' => 'Tasks generated successfully.'], 201);
+	}
 }

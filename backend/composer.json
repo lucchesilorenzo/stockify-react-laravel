@@ -10,7 +10,7 @@
   "license": "MIT",
   "require": {
     "php": "^8.2",
-    "cloudstudio/ollama-laravel": "^1.0",
+    "ardagnsrn/ollama-php": "^1.0",
     "laravel/framework": "^11.31",
     "laravel/sanctum": "^4.0",
     "laravel/telescope": "^5.2",
