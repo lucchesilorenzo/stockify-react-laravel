@@ -13,20 +13,17 @@ class AuthController extends Controller
 {
   /**
    * Handle the registration of a new user.
-   *
-   * @param Request $request
-   * @return JsonResponse
    */
   public function signUp(Request $request): JsonResponse
   {
     // Validation
-    $rules = Validator::make($request->all(), ([
+    $rules = Validator::make($request->all(), [
       'first_name' => 'required|string|max:20',
       'last_name' => 'required|string|max:20',
       'email' => 'required|email|unique:users,email',
       'password' => 'required|string|max:20',
       'confirm_password' => 'required|string|max:20|same:password',
-    ]));
+    ]);
 
     // Check if validation fails
     if ($rules->fails()) {
@@ -62,17 +59,14 @@ class AuthController extends Controller
 
   /**
    * Handle the login of a user.
-   *
-   * @param Request $request
-   * @return JsonResponse
    */
   public function logIn(Request $request): JsonResponse
   {
     // Validation
-    $rules = Validator::make($request->all(), ([
+    $rules = Validator::make($request->all(), [
       'email' => 'required|email',
       'password' => 'required',
-    ]));
+    ]);
 
     // Check if validation fails
     if ($rules->fails()) {
@@ -101,7 +95,7 @@ class AuthController extends Controller
   /**
    * Handle the logout of a user.
    *
-   * @param Request $request
+   * @param  Request  $request
    * @return JsonResource
    */
   public function logOut(): JsonResponse

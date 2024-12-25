@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1b1ead8e019ff7ad49fe45b2aa92ae6b",
+    "content-hash": "f1489995db43c34fe8abf2b9e7d78105",
     "packages": [
         {
             "name": "ardagnsrn/ollama-php",

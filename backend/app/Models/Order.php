@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Order extends Model
 {
-    use HasUuids;
+    use HasUuids, HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -29,8 +31,6 @@ class Order extends Model
 
     /**
      * Get the user that owns the order.
-     *
-     * @return BelongsTo
      */
     public function user(): BelongsTo
     {
@@ -39,8 +39,6 @@ class Order extends Model
 
     /**
      * Get the product that owns the order.
-     *
-     * @return BelongsTo
      */
     public function product(): BelongsTo
     {
@@ -49,8 +47,6 @@ class Order extends Model
 
     /**
      * Get the supplier that owns the order.
-     *
-     * @return BelongsTo
      */
     public function supplier(): BelongsTo
     {

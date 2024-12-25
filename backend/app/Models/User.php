@@ -14,7 +14,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasApiTokens, HasFactory, Notifiable, HasUuids;
+    use HasApiTokens, HasFactory, HasUuids, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -39,10 +39,7 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
+    protected $hidden = ['password', 'remember_token'];
 
     /**
      * Get the attributes that should be cast.
@@ -59,8 +56,6 @@ class User extends Authenticatable
 
     /**
      * Get the orders for the user.
-     *
-     * @return HasMany
      */
     public function orders(): HasMany
     {
@@ -69,8 +64,6 @@ class User extends Authenticatable
 
     /**
      * Get the tasks for the user.
-     *
-     * @return HasMany
      */
     public function tasks(): HasMany
     {
@@ -79,8 +72,6 @@ class User extends Authenticatable
 
     /**
      * Get the activities for the user.
-     *
-     * @return HasMany
      */
     public function activities(): HasMany
     {

@@ -6,15 +6,12 @@ use App\Models\Activity;
 use App\Models\Supplier;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class SupplierController extends Controller
 {
 	/**
 	 * Display a listing of the resource.
-	 *
-	 * @return JsonResponse
 	 */
 	public function getSuppliers(): JsonResponse
 	{
@@ -28,9 +25,6 @@ class SupplierController extends Controller
 
 	/**
 	 * Store a newly created resource in storage.
-	 *
-	 * @param Request $request
-	 * @return JsonResponse
 	 */
 	public function createSupplier(Request $request): JsonResponse
 	{
@@ -59,7 +53,7 @@ class SupplierController extends Controller
 		} catch (\Throwable $e) {
 			return response()->json([
 				'message' => 'Failed to create supplier.',
-				'error' => $e->getMessage()
+				'error' => $e->getMessage(),
 			], 500);
 		}
 
@@ -75,7 +69,7 @@ class SupplierController extends Controller
 		} catch (\Throwable $e) {
 			return response()->json([
 				'message' => 'Failed to create activity.',
-				'error' => $e->getMessage()
+				'error' => $e->getMessage(),
 			], 500);
 		}
 
@@ -84,10 +78,6 @@ class SupplierController extends Controller
 
 	/**
 	 * Update the specified resource in storage.
-	 * 
-	 * @param Request $request
-	 * @param Supplier $supplier
-	 * @return JsonResponse
 	 */
 	public function updateSupplierRating(Request $request, Supplier $supplier): JsonResponse
 	{

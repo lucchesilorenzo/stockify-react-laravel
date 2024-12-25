@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
-    use HasUuids;
+    use HasUuids, HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -20,8 +22,6 @@ class Category extends Model
 
     /**
      * Get the products for the category.
-     *
-     * @return HasMany
      */
     public function products(): HasMany
     {

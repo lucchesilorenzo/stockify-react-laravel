@@ -8,17 +8,17 @@ import { LoadingButton } from "../../common/LoadingButton";
 import CustomerInfoCard from "./CustomerInfoCard";
 import ProductSelectionCard from "./ProductSelectionCard";
 
+import { useCreateShipment } from "@/hooks/mutations/customers/useCreateShipment";
 import { useCustomer } from "@/hooks/useCustomer";
+import { CustomerWithCustomerShipment, Product } from "@/lib/types";
 import {
   TShippingFormSchema,
   shippingFormSchema,
 } from "@/lib/validations/customer-validations";
-import { useCreateShipment } from "@/hooks/mutations/customers/useCreateShipment";
-import { Customer, Product } from "@/lib/types";
 
 type CustomerShipmentFormProps = {
   products: Product[];
-  customers: Customer[];
+  customers: CustomerWithCustomerShipment[];
 };
 
 export default function CustomerShipmentForm({

@@ -3,13 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
-    use HasUuids;
+    use HasUuids, HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -32,8 +34,6 @@ class Product extends Model
 
     /**
      * Get the category that owns the product.
-     *
-     * @return BelongsTo
      */
     public function category(): BelongsTo
     {
@@ -42,8 +42,6 @@ class Product extends Model
 
     /**
      * Get the warehouse that owns the product.
-     *
-     * @return BelongsTo
      */
     public function warehouse(): BelongsTo
     {
@@ -52,8 +50,6 @@ class Product extends Model
 
     /**
      * Get all of the orders associated with the product.
-     *
-     * @return HasMany
      */
     public function orders(): HasMany
     {
@@ -62,8 +58,6 @@ class Product extends Model
 
     /**
      * Get all of the shipment items associated with the product.
-     *
-     * @return HasMany
      */
     public function shipmentItems(): HasMany
     {

@@ -7,6 +7,8 @@ import {
 
 import CustomerInfoFormSelect from "./CustomerInfoFormSelect";
 
+import EmailInput from "@/components/common/EmailInput";
+import { PhoneInput } from "@/components/common/PhoneInput";
 import {
   Card,
   CardContent,
@@ -14,16 +16,14 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import EmailInput from "@/components/common/EmailInput";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { PhoneInput } from "@/components/common/PhoneInput";
 import { useCustomer } from "@/hooks/useCustomer";
+import { CustomerWithCustomerShipment } from "@/lib/types";
 import { TShippingFormSchema } from "@/lib/validations/customer-validations";
-import { Customer } from "@/lib/types";
 
 type CustomerInfoCardProps = {
-  customers: Customer[];
+  customers: CustomerWithCustomerShipment[];
   control: Control<TShippingFormSchema>;
   register: UseFormRegister<TShippingFormSchema>;
   errors: FieldErrors<TShippingFormSchema>;

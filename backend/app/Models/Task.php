@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Task extends Model
 {
-    use HasUuids;
+    use HasUuids, HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -20,7 +22,7 @@ class Task extends Model
         'status',
         'priority',
         'label',
-        'due_date'
+        'due_date',
     ];
 
     /**
@@ -34,8 +36,6 @@ class Task extends Model
 
     /**
      * Get the user that owns the task.
-     *
-     * @return BelongsTo
      */
     public function user(): BelongsTo
     {

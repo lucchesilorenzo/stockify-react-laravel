@@ -4,14 +4,12 @@ namespace App\Prompts;
 
 class TaskPrompt
 {
-  /**
-   * Get task structure.
-   *
-   * @return string
-   */
-  public static function getTaskStructure(): string
-  {
-    return <<<TEXT
+    /**
+     * Get task structure.
+     */
+    public static function getTaskStructure(): string
+    {
+        return <<<'TEXT'
       Each task should have the following structure:
     [
       [
@@ -23,16 +21,14 @@ class TaskPrompt
       }
     ]
     TEXT;
-  }
+    }
 
-  /**
-   * Get example output.
-   *
-   * @return string
-   */
-  public static function getExampleOutput(): string
-  {
-    return <<<TEXT
+    /**
+     * Get example output.
+     */
+    public static function getExampleOutput(): string
+    {
+        return <<<'TEXT'
         Here is an example of the expected output:
     [
       {
@@ -51,5 +47,5 @@ class TaskPrompt
       },
     ]
     TEXT;
-  }
+    }
 }

@@ -9,13 +9,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useCustomer } from "@/hooks/useCustomer";
 import { Separator } from "@/components/ui/separator";
+import { useCustomer } from "@/hooks/useCustomer";
+import { CustomerWithCustomerShipment } from "@/lib/types";
 import CustomerCSVUpload from "./CustomerCSVUpload";
-import { Customer } from "@/lib/types";
 
 type CustomerInfoFormSelectProps = {
-  customers: Customer[];
+  customers: CustomerWithCustomerShipment[];
   onClearAll: () => void;
 };
 
