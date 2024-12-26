@@ -68,7 +68,7 @@ export default function TaskForm({ onFormSubmit }: TaskFormProps) {
         </div>
 
         <div className="space-y-1">
-          <Label htmlFor="status">
+          <Label htmlFor="status-select">
             Status <span className="text-red-600">*</span>
           </Label>
           <Select onValueChange={(value) => setValue("status", value)}>
@@ -92,7 +92,7 @@ export default function TaskForm({ onFormSubmit }: TaskFormProps) {
         </div>
 
         <div className="space-y-1">
-          <Label htmlFor="priority">
+          <Label htmlFor="priority-select">
             Priority <span className="text-red-600">*</span>
           </Label>
           <Select onValueChange={(value) => setValue("priority", value)}>
@@ -118,7 +118,7 @@ export default function TaskForm({ onFormSubmit }: TaskFormProps) {
         </div>
 
         <div className="space-y-1">
-          <Label htmlFor="label">
+          <Label htmlFor="label-select">
             Label <span className="text-red-600">*</span>
           </Label>
           <Select onValueChange={(value) => setValue("label", value)}>

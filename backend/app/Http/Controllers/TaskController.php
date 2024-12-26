@@ -2,19 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateTaskRequest;
+use App\Http\Requests\GenerateTasksRequest;
+use App\Http\Requests\UpdateTaskFieldRequest;
+use App\Http\Requests\UpdateTaskRequest;
 use App\Models\Activity;
 use App\Models\Task;
 use App\Prompts\TaskPrompt;
 use ArdaGnsrn\Ollama\Ollama;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Validator;
 
 class TaskController extends Controller
 {
   /**
-   * Display a listing of the resource.
+   * Get all tasks.
+   *
+   * @return JsonResponse
    */
   public function getTasks(): JsonResponse
   {
@@ -28,26 +32,15 @@ class TaskController extends Controller
   }
 
   /**
-   * Store a newly created resource in storage.
+   * Create a new task.
+   *
+   * @param CreateTaskRequest $request
+   * @return JsonResponse
    */
-  public function createTask(Request $request): JsonResponse
+  public function createTask(CreateTaskRequest $request): JsonResponse
   {
-    // Validation
-    $rules = Validator::make($request->all(), [
-      'title' => 'required|string|max:100',
-      'status' => 'required',
-      'priority' => 'required',
-      'label' => 'required',
-      'due_date' => 'required|date',
-    ]);
-
-    // Check if validation fails
-    if ($rules->fails()) {
-      return response()->json(['message' => 'Invalid task data.'], 400);
-    }
-
     // Get validated data
-    $validatedData = $rules->validated();
+    $validatedData = $request->validated();
 
     // Add user ID
     $validatedData['user_id'] = auth()->user()->id;
@@ -74,23 +67,16 @@ class TaskController extends Controller
   }
 
   /**
-   * Update the specified resource in storage.
+   * Update task.
+   *
+   * @param UpdateTaskRequest $request
+   * @param Task $task
+   * @return JsonResponse
    */
-  public function updateTask(Request $request, Task $task): JsonResponse
+  public function updateTask(UpdateTaskRequest $request, Task $task): JsonResponse
   {
-    // Validation
-    $rules = Validator::make($request->all(), [
-      'title' => 'string|max:100',
-      'due_date' => 'date',
-    ]);
-
-    // Check if validation fails
-    if ($rules->fails()) {
-      return response()->json(['message' => 'Invalid task data.'], 400);
-    }
-
     // Get validated data
-    $validatedData = $rules->validated();
+    $validatedData = $request->validated();
 
     // Update task
     try {
@@ -114,25 +100,16 @@ class TaskController extends Controller
   }
 
   /**
-   * Update the specified resource in storage.
+   * Update task field.
    *
+   * @param UpdateTaskFieldRequest $request
+   * @param Task $task
    * @return JsonResponse
    */
-  public function updateTaskField(Request $request, Task $task)
+  public function updateTaskField(UpdateTaskFieldRequest $request, Task $task): JsonResponse
   {
-    // Validation
-    $rules = Validator::make($request->all(), [
-      'field' => 'required|in:status,priority,label',
-      'value' => 'required|string',
-    ]);
-
-    // Check if validation fails
-    if ($rules->fails()) {
-      return response()->json(['message' => 'Invalid task data.'], 400);
-    }
-
     // Get validated data
-    $validatedData = $rules->validated();
+    $validatedData = $request->validated();
 
     // Extract field and value
     $field = $validatedData['field'];
@@ -172,7 +149,10 @@ class TaskController extends Controller
   }
 
   /**
-   * Remove the specified resource from storage.
+   * Delete task.
+   *
+   * @param Task $task
+   * @return JsonResponse
    */
   public function deleteTask(Task $task): JsonResponse
   {
@@ -199,22 +179,14 @@ class TaskController extends Controller
 
   /**
    * Generate tasks.
+   *
+   * @param GenerateTasksRequest $request
+   * @return JsonResponse
    */
-  public function generateTasks(Request $request): JsonResponse
+  public function generateTasks(GenerateTasksRequest $request): JsonResponse
   {
-    // Validation
-    $rules = Validator::make($request->all(), [
-      'prompt' => 'required|string|max:1000',
-      'num_tasks' => 'required|integer|min:1',
-    ]);
-
-    // Check if validation fails
-    if ($rules->fails()) {
-      return response()->json(['message' => 'Invalid task data.'], 400);
-    }
-
     // Get validated data
-    $validatedData = $rules->validated();
+    $validatedData = $request->validated();
 
     $numTasks = $validatedData['num_tasks'] ?? 5;
     $description = $validatedData['prompt'];

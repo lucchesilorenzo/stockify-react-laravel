@@ -31,7 +31,7 @@ class UserFactory extends Factory
       'date_of_birth' => fake()->dateTimeBetween('-50 years', '-1 year')->format('Y-m-d'),
       'phone' => fake()->unique()->e164PhoneNumber(),
       'bio' => fake()->sentence(),
-      'address' => fake()->address(),
+      'address' => fake()->streetAddress(),
       'city' => fake()->city(),
       'zip_code' => fake()->postcode(),
       'email_verified_at' => now(),

@@ -21,7 +21,7 @@ class CustomerFactory extends Factory
             'last_name' => fake()->lastName(),
             'email' => fake()->unique()->safeEmail(),
             'phone' => fake()->unique()->e164PhoneNumber(),
-            'address' => fake()->address(),
+            'address' => fake()->streetAddress(),
             'city' => fake()->city(),
             'zip_code' => fake()->postcode(),
         ];

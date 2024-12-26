@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\StringHelper;
+use App\Http\Requests\CreateOrderRequest;
+use App\Http\Requests\CreateRestockOrderRequest;
 use App\Models\Activity;
 use App\Models\Category;
 use App\Models\Order;
@@ -11,15 +13,13 @@ use App\Models\Warehouse;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class OrderController extends Controller
 {
   /**
    * Display a listing of the resource.
    *
-   * @param  Request  $request
+   * @return JsonResponse
    */
   public function getOrders(): JsonResponse
   {
@@ -43,7 +43,9 @@ class OrderController extends Controller
   }
 
   /**
-   * Display a listing of the resource.
+   * Get the monthly orders.
+   *
+   * @return JsonResponse
    */
   public function getMonthlyOrders(): JsonResponse
   {
@@ -69,7 +71,9 @@ class OrderController extends Controller
   }
 
   /**
-   * Display a listing of the resource.
+   * Get the weekly orders.
+   *
+   * @return JsonResponse
    */
   public function getWeeklyOrders(): JsonResponse
   {
@@ -95,29 +99,15 @@ class OrderController extends Controller
   }
 
   /**
-   * Store a newly created resource in storage.
+   * Create a new order.
+   *
+   * @param CreateOrderRequest $request
+   * @return JsonResponse
    */
-  public function createOrder(Request $request): JsonResponse
+  public function createOrder(CreateOrderRequest $request): JsonResponse
   {
-    // Validation
-    $rules = Validator::make($request->all(), [
-      'name' => 'required|string|max:20',
-      'category_id' => 'required|string|exists:categories,id',
-      'warehouse_id' => 'required|string|exists:warehouses,id',
-      'supplier_id' => 'required|string|exists:suppliers,id',
-      'vat_rate' => 'required|string',
-      'price' => 'required|numeric|max:99999',
-      'quantity' => 'required|integer|lte:max_quantity',
-      'max_quantity' => 'required|integer',
-    ]);
-
-    // Check if validation fails
-    if ($rules->fails()) {
-      return response()->json(['message' => 'Invalid order data.'], 400);
-    }
-
     // Get validated data
-    $validatedOrder = $rules->validated();
+    $validatedOrder = $request->validated();
 
     // Check if there is enough space in the warehouse
     $warehouse = Warehouse::findOrFail($validatedOrder['warehouse_id']);
@@ -141,10 +131,7 @@ class OrderController extends Controller
       ->toArray();
 
     // Generate SKU and slug
-    $productData['sku'] = StringHelper::generateSKU(
-      $category->name,
-      $productData['name'],
-    );
+    $productData['sku'] = StringHelper::generateSKU($category->name, $productData['name']);
     $productData['slug'] = StringHelper::generateSlug($productData['name']);
 
     $productData['vat_rate'] = (int) $validatedOrder['vat_rate'];
@@ -153,7 +140,7 @@ class OrderController extends Controller
     try {
       $product = Product::create($productData);
     } catch (QueryException $e) {
-      if ($e->getCode() === '23000') {
+      if ($e->getCode() === 23000) {
         return response()->json(['message' => 'Product already exists.'], 400);
       }
 
@@ -188,7 +175,7 @@ class OrderController extends Controller
     try {
       Order::create($orderDetails);
     } catch (QueryException $e) {
-      if ($e->getCode() === '23000') {
+      if ($e->getCode() === 23000) {
         return response()->json(['message' => 'Order already exists.'], 400);
       }
 
@@ -212,15 +199,13 @@ class OrderController extends Controller
     }
 
     // Create a new activity
-    $activity = [
-      'activity' => 'CREATED',
-      'entity' => 'Order',
-      'product' => $product->name,
-      'user_id' => auth()->user()->id,
-    ];
-
     try {
-      Activity::create($activity);
+      Activity::create([
+        'activity' => 'CREATED',
+        'entity' => 'Order',
+        'product' => $product->name,
+        'user_id' => auth()->user()->id,
+      ]);
     } catch (\Throwable $e) {
       return response()->json(['message' => 'Failed to create activity.'], 500);
     }
@@ -229,27 +214,15 @@ class OrderController extends Controller
   }
 
   /**
-   * Create restock order
+   * Create a new restock order.
+   *
+   * @param CreateRestockOrderRequest $request
+   * @return JsonResponse
    */
-  public function createRestockOrder(Request $request): JsonResponse
+  public function createRestockOrder(CreateRestockOrderRequest $request): JsonResponse
   {
-    // Validation
-    $rules = Validator::make($request->all(), [
-      'product_id' => 'required|string|exists:products,id',
-      'supplier_id' => 'required|string|exists:suppliers,id',
-      'quantity' => 'required|integer',
-    ]);
-
-    // Check if validation fails
-    if ($rules->fails()) {
-      return response()->json(
-        ['message' => 'Invalid restock order data.'],
-        400,
-      );
-    }
-
     // Get validated order data
-    $validatedRestockOrder = $rules->validated();
+    $validatedRestockOrder = $request->validated();
 
     // Check if product exists
     $product = Product::findOrFail($validatedRestockOrder['product_id']);
@@ -323,19 +296,15 @@ class OrderController extends Controller
     try {
       Order::create($orderDetails);
     } catch (QueryException $e) {
-      if ($e->getCode() === '23000') {
+      if ($e->getCode() === 23000) {
         return response()->json(
-          [
-            'message' => 'Restock order already exists.',
-          ],
+          ['message' => 'Restock order already exists.'],
           500,
         );
       }
 
       return response()->json(
-        [
-          'message' => 'Failed to create restock order.',
-        ],
+        ['message' => 'Failed to create restock order.'],
         500,
       );
     }
@@ -362,15 +331,13 @@ class OrderController extends Controller
     }
 
     // Create a new activity
-    $activity = [
-      'activity' => 'CREATED',
-      'entity' => 'Restock',
-      'product' => $product->name,
-      'user_id' => auth()->user()->id,
-    ];
-
     try {
-      Activity::create($activity);
+      Activity::create([
+        'activity' => 'CREATED',
+        'entity' => 'Restock',
+        'product' => $product->name,
+        'user_id' => auth()->user()->id,
+      ]);
     } catch (\Throwable $e) {
       return response()->json(['message' => 'Failed to create activity.'], 500);
     }
@@ -382,9 +349,10 @@ class OrderController extends Controller
   }
 
   /**
-   * Update order status.
+   * Update order status
    *
-   * @return void
+   * @param Order $order
+   * @return JsonResponse
    */
   public function updateOrderStatus(Order $order): JsonResponse
   {
@@ -399,14 +367,12 @@ class OrderController extends Controller
     }
 
     // Create a new activity
-    $activity = [
-      'activity' => 'UPDATED',
-      'entity' => 'Order',
-      'user_id' => auth()->user()->id,
-    ];
-
     try {
-      Activity::create($activity);
+      Activity::create([
+        'activity' => 'UPDATED',
+        'entity' => 'Order',
+        'user_id' => auth()->user()->id,
+      ]);
     } catch (\Throwable $e) {
       return response()->json(['message' => 'Failed to create activity.'], 500);
     }

@@ -107,13 +107,12 @@ Stockify is built using modern and efficient web technologies:
 
 **Back-end:**
 
-- [Express](https://expressjs.com/) for handling backend logic.
-- [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) for JWT authentication.
-- [Multer](https://github.com/expressjs/multer) for file uploads.
+- [PHP](https://www.php.net/) for server-side programming.
+- [Laravel](https://laravel.com/) for building a robust and powerful web application.
 
 **Database:**
 
-- [Prisma](https://www.prisma.io/) as the database ORM.
+- [SQLite](https://sqlite.org/) for a lightweight, in-memory database.
 
 **Other Libraries:**
 
@@ -123,9 +122,8 @@ Stockify is built using modern and efficient web technologies:
 - [Recharts](https://recharts.org/en-US/) for visual data representation.
 - [React Day Picker](https://react-day-picker.js.org/) for date selection in forms.
 - [React CSV](https://github.com/react-csv/react-csv) for exporting data to CSV files.
-- [Node Cron](https://github.com/merencia/node-cron) for scheduling tasks.
 - [Papaparse](https://github.com/mholt/papaparse) for parsing CSV files.
-- [Ollama](https://github.com/ollama/ollama-js) for AI integration.
+- [Ollama](https://github.com/ArdaGnsrn/ollama-php) for AI integration.
 
 ## API Reference
 
@@ -139,6 +137,7 @@ Ensure you have the following installed:
 
 - [Git](https://git-scm.com/)
 - [Node.js (v22+)](https://nodejs.org/en/)
+- [PHP, Composer and Laravel](https://laravel.com/docs/11.x#installing-php)
 - [Ollama](https://ollama.com/download) with the following model: [qwen2.5-coder:1.5b](https://ollama.com/library/qwen2.5-coder:1.5b)
 
 ### Installation
@@ -146,8 +145,8 @@ Ensure you have the following installed:
 1. **Clone the repository**:
 
    ```bash
-   git clone https://github.com/lucchesilorenzo/stockify-react-express
-   cd stockify-react-express
+   git clone https://github.com/lucchesilorenzo/stockify-react-laravel
+   cd stockify-react-laravel
    code .
    ```
 
@@ -166,37 +165,32 @@ Ensure you have the following installed:
    Create a `.env` file for the **front-end** with the following values:
 
    ```bash
-   VITE_BASE_URL=http://localhost:3000 # The URL of your Express app
+   VITE_BASE_URL=http://localhost:8000 # The URL of your Laravel app
    ```
 
    ```bash
    cd ../backend
    ```
 
-   Create a `.env` file for the **back-end** with the following values:
+4. **Create an SQLite database**:
 
    ```bash
-   DATABASE_URL="file:./dev.db"
-   APP_ORIGIN=http://localhost:5173 # The URL of your React app
-   API_URL=http://localhost:3000 # The URL of your Express app
-   PORT=3000 # The port your Express app is running on
-   NODE_ENV=development # Set to "production" in a production environment
-   JWT_SECRET="your-secret" # You can generate one with `openssl rand -base64 32`
+   touch database/database.sqlite
    ```
 
-4. **Run database push**:
+5. **Run database migrations**:
 
    ```bash
-   npx prisma db push
+   php artisan migrate
    ```
 
-5. **Run database seed**:
+6. **Run database seeder**:
 
    ```bash
-   npx prisma db seed
+   php artisan db:seed
    ```
 
-6. **Start both the frontend and backend**:
+7. **Start both the frontend and backend**:
 
    ```bash
    cd .. && npm start
@@ -208,7 +202,7 @@ Ensure you have the following installed:
 
 Here’s a basic overview of the core models:
 
-![Prisma ER Diagram](./screenshots/database-schema.svg)
+![Eloquent ER Diagram](./screenshots/database-schema.png)
 
 ## Future Features
 

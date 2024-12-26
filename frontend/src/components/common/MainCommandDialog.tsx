@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Brain } from "lucide-react";
-import { useTheme } from "next-themes";
 
 import {
   CommandDialog,
@@ -21,6 +20,7 @@ import { useFontSize } from "@/hooks/useFontSize";
 import { fontSizeData, routes, themeData } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
+import { useTheme } from "@/hooks/useTheme";
 
 export function MainCommandDialog() {
   const { setTheme } = useTheme();

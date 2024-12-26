@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateProductRequest;
 use App\Models\Activity;
 use App\Models\Product;
 use App\Models\Warehouse;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
 
 class ProductController extends Controller
 {
 	/**
-	 * Display a listing of the resource.
+	 * Get all products.
+	 *
+	 * @return JsonResponse
 	 */
 	public function getProducts(): JsonResponse
 	{
@@ -37,7 +38,9 @@ class ProductController extends Controller
 	}
 
 	/**
-	 * Display a listing of the resource.
+	 * Get available products.
+	 *
+	 * @return JsonResponse
 	 */
 	public function getAvailableProducts(): JsonResponse
 	{
@@ -58,7 +61,9 @@ class ProductController extends Controller
 	}
 
 	/**
-	 * Display a listing of the resource.
+	 * Get products to restock.
+	 *
+	 * @return JsonResponse
 	 */
 	public function getProductsToRestock(): JsonResponse
 	{
@@ -95,26 +100,15 @@ class ProductController extends Controller
 	}
 
 	/**
-	 * Update the specified resource in storage.
+	 * Update product.
+	 *
+	 * @param UpdateProductRequest $request
+	 * @param Product $product
+	 * @return JsonResponse
 	 */
-	public function updateProduct(Request $request, Product $product): JsonResponse
+	public function updateProduct(UpdateProductRequest $request, Product $product): JsonResponse
 	{
-		// Validation
-		$rules = Validator::make($request->all(), [
-			'description' => 'nullable|string|max:200',
-			'price' => 'required|numeric|max:99999',
-			'max_quantity' => 'required|integer|max:500',
-			'category_id' => 'nullable|string|exists:categories,id',
-			'warehouse_id' => 'nullable|string|exists:warehouses,id',
-			'image' => 'nullable|image|mimes:jpeg,png,jpg,svg,webp|max:2048',
-		]);
-
-		// Check if validation fails
-		if ($rules->fails()) {
-			return response()->json(['message' => 'Invalid product data.'], 400);
-		}
-
-		$validatedProduct = $rules->validated();
+		$validatedProduct = $request->validated();
 
 		// Check if max quantity is greater than current quantity
 		if (! ($validatedProduct['max_quantity'] >= $product->max_quantity)) {
@@ -162,15 +156,13 @@ class ProductController extends Controller
 		}
 
 		// Create a new activity
-		$activity = [
-			'activity' => 'UPDATED',
-			'entity' => 'Product',
-			'product' => $product->name,
-			'user_id' => auth()->user()->id,
-		];
-
 		try {
-			Activity::create($activity);
+			Activity::create([
+				'activity' => 'UPDATED',
+				'entity' => 'Product',
+				'product' => $product->name,
+				'user_id' => auth()->user()->id,
+			]);
 		} catch (\Throwable $e) {
 			return response()->json(['message' => 'Failed to create activity.'], 500);
 		}
@@ -179,21 +171,15 @@ class ProductController extends Controller
 	}
 
 	/**
-	 * Update the specified resource in storage.
+	 * Update product status.
+	 *
+	 * @param UpdateProductRequest $request
+	 * @param Product $product
+	 * @return JsonResponse
 	 */
-	public function updateProductStatus(Request $request, Product $product): JsonResponse
+	public function updateProductStatus(UpdateProductRequest $request, Product $product): JsonResponse
 	{
-		// Validation
-		$rules = Validator::make($request->all(), [
-			'status' => 'required|in:IN_STOCK,OUT_OF_STOCK,ARCHIVED',
-		]);
-
-		// Check if validation fails
-		if ($rules->fails()) {
-			return response()->json(['message' => 'Invalid product status.'], 400);
-		}
-
-		$validatedData = $rules->validated();
+		$validatedData = $request->validated();
 
 		// Set product status
 		try {
@@ -207,15 +193,13 @@ class ProductController extends Controller
 		}
 
 		// Create a new activity
-		$activity = [
-			'activity' => $validatedData['status'] !== 'ARCHIVED' ? 'ARCHIVED' : 'RESTORED',
-			'entity' => 'Product',
-			'product' => $product->name,
-			'user_id' => auth()->user()->id,
-		];
-
 		try {
-			Activity::create($activity);
+			Activity::create([
+				'activity' => $validatedData['status'] !== 'ARCHIVED' ? 'ARCHIVED' : 'RESTORED',
+				'entity' => 'Product',
+				'product' => $product->name,
+				'user_id' => auth()->user()->id,
+			]);
 		} catch (\Throwable $e) {
 			return response()->json(['message' => 'Failed to create activity.'], 500);
 		}

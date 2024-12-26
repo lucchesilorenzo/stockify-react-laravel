@@ -10,7 +10,9 @@ use Illuminate\Http\JsonResponse;
 class DashboardController extends Controller
 {
   /**
-   * Display a listing of the resource.
+   * Get the inventory value.
+   *
+   * @return JsonResponse
    */
   public function getInventoryValue(): JsonResponse
   {
@@ -28,7 +30,9 @@ class DashboardController extends Controller
   }
 
   /**
-   * Display a listing of the resource.
+   * Get the number of low stock products.
+   *
+   * @return JsonResponse
    */
   public function getLowStockProducts(): JsonResponse
   {
@@ -55,7 +59,9 @@ class DashboardController extends Controller
   }
 
   /**
-   * Display a listing of the resource.
+   * Get the number of shipped orders.
+   *
+   * @return JsonResponse
    */
   public function getShippedOrders(): JsonResponse
   {
@@ -71,7 +77,9 @@ class DashboardController extends Controller
   }
 
   /**
-   * Display a listing of the resource.
+   * Get the number of units in stock.
+   *
+   * @return JsonResponse
    */
   public function getUnitsInStock(): JsonResponse
   {
@@ -90,7 +98,9 @@ class DashboardController extends Controller
   }
 
   /**
-   * Display a listing of the resource.
+   * Get the activities.
+   *
+   * @return JsonResponse
    */
   public function getActivities(): JsonResponse
   {

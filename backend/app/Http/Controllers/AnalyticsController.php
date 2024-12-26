@@ -67,6 +67,8 @@ class AnalyticsController extends Controller
 
   /**
    * Get monthly inventory value.
+   *
+   * @return JsonResponse
    */
   public function getMonthlyInventoryValue(): JsonResponse
   {
@@ -89,6 +91,8 @@ class AnalyticsController extends Controller
 
   /**
    * Get top products.
+   *
+   * @return JsonResponse
    */
   public function getTopProducts(): JsonResponse
   {

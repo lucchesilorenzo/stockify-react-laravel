@@ -11,17 +11,14 @@ use Illuminate\Queue\SerializesModels;
 
 class UpdateShipmentStatus implements ShouldQueue
 {
-    use Dispatchable;
-    use InteractsWithQueue;
-    use Queueable;
-    use SerializesModels;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $shipmentId;
 
     /**
      * Create a new job instance.
      */
-    public function __construct($shipmentId)
+    public function __construct(string $shipmentId)
     {
         $this->shipmentId = $shipmentId;
     }

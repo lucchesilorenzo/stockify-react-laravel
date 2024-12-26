@@ -2,79 +2,59 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LogInRequest;
+use App\Http\Requests\SignUpRequest;
 use App\Models\User;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
   /**
-   * Handle the registration of a new user.
+   * Handle the signup of a user.
+   *
+   * @param SignUpRequest $request
+   * @return JsonResponse
    */
-  public function signUp(Request $request): JsonResponse
+  public function signUp(SignUpRequest $request): JsonResponse
   {
-    // Validation
-    $rules = Validator::make($request->all(), [
-      'first_name' => 'required|string|max:20',
-      'last_name' => 'required|string|max:20',
-      'email' => 'required|email|unique:users,email',
-      'password' => 'required|string|max:20',
-      'confirm_password' => 'required|string|max:20|same:password',
-    ]);
-
-    // Check if validation fails
-    if ($rules->fails()) {
-      return response()->json(['message' => 'Invalid credentials.'], 400);
-    }
-
     // Get validated data
-    $validatedData = $rules->validated();
-
-    // Hash password
-    $password = bcrypt($validatedData['password']);
+    $validatedData = $request->validated();
 
     try {
       // Create user
-      $newUser = [
+      $user = User::create([
         'first_name' => $validatedData['first_name'],
         'last_name' => $validatedData['last_name'],
         'email' => $validatedData['email'],
-        'password' => $password,
-      ];
-
-      // Store user in database
-      $user = User::create($newUser);
+        'password' => Hash::make($validatedData['password']),
+      ]);
 
       // Generate Sanctum token
       $token = $user->createToken('auth_token')->plainTextToken;
 
       return response()->json(['token' => $token], 201);
-    } catch (\Throwable $e) {
+    } catch (QueryException $e) {
+      if ($e->getCode() === 23000) {
+        return response()->json(['message' => 'User already exists.'], 400);
+      }
       return response()->json(['message' => 'Could not create user.'], 500);
     }
   }
 
   /**
    * Handle the login of a user.
+   *
+   * @param LogInRequest $request
+   * @return JsonResponse
    */
-  public function logIn(Request $request): JsonResponse
+  public function logIn(LogInRequest $request): JsonResponse
   {
-    // Validation
-    $rules = Validator::make($request->all(), [
-      'email' => 'required|email',
-      'password' => 'required',
-    ]);
-
-    // Check if validation fails
-    if ($rules->fails()) {
-      return response()->json(['message' => 'Invalid credentials.'], 400);
-    }
-
     // Get validated data
-    $validatedData = $rules->validated();
+    $validatedData = $request->validated();
 
     try {
       // Check if user exists and password is correct

@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateCustomerShipmentRequest;
+use App\Http\Requests\CreateCustomersRequest;
+use App\Http\Requests\UpdateCustomerRequest;
 use App\Jobs\UpdateShipmentStatus;
 use App\Models\Activity;
 use App\Models\Customer;
@@ -11,8 +14,6 @@ use App\Models\ShipmentItem;
 use App\Models\Warehouse;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class CustomerController extends Controller
 {
@@ -31,41 +32,21 @@ class CustomerController extends Controller
       return response()->json($customers);
     } catch (\Throwable $e) {
       return response()->json(
-        [
-          'message' => 'Failed to get customers.',
-          'error' => $e->getMessage(),
-        ],
+        ['message' => 'Failed to get customers.'],
         500,
       );
     }
   }
 
   /**
-   * Create a new customer shipment.
+   * Create customer shipment.
+   *
+   * @param CreateCustomerShipmentRequest $request
+   * @return JsonResponse
    */
-  public function createCustomerShipment(Request $request): JsonResponse
+  public function createCustomerShipment(CreateCustomerShipmentRequest $request): JsonResponse
   {
-    // Validation
-    $rules = Validator::make($request->all(), [
-      'first_name' => 'required|string|max:20',
-      'last_name' => 'required|string|max:20',
-      'email' => 'required|email',
-      'phone' => 'required|string|max:15',
-      'address' => 'required|string|max:40',
-      'city' => 'required|string|max:20',
-      'zip_code' => 'required|string|max:10',
-      'products' => 'required|array',
-      'products.*.product_id' => 'required|string|exists:products,id',
-      'products.*.warehouse_id' => 'required|string|exists:warehouses,id',
-      'products.*.name' => 'required|string',
-      'products.*.quantity' => 'required|integer',
-    ]);
-
-    if ($rules->fails()) {
-      return response()->json(['message' => 'Invalid customer data.'], 400);
-    }
-
-    $validatedShipment = $rules->validated();
+    $validatedShipment = $request->validated();
 
     // Check if customer alredy exists
     $customer = Customer::where('email', $validatedShipment['email'])->first();
@@ -115,14 +96,10 @@ class CustomerController extends Controller
 
     // Create new customer shipment
     try {
-      $newShipment = CustomerShipment::create([
-        'customer_id' => $customerId,
-      ]);
+      $newShipment = CustomerShipment::create(['customer_id' => $customerId]);
 
       // Update shipment status with job
-      UpdateShipmentStatus::dispatch($newShipment->id)->delay(
-        now()->addMinutes(5),
-      );
+      UpdateShipmentStatus::dispatch($newShipment->id)->delay(now()->addMinutes(5));
 
       // Create items for shipment
       $customerShipmentItems = collect($validatedShipment['products'])
@@ -160,9 +137,7 @@ class CustomerController extends Controller
     }
 
     // Decrement quantity from inventory
-    $productsToUpdate = collect($validatedShipment['products'])->map(function (
-      $p,
-    ) {
+    $productsToUpdate = collect($validatedShipment['products'])->map(function ($p) {
       return [
         'id' => $p['product_id'],
         'quantity' => $p['quantity'],
@@ -245,32 +220,14 @@ class CustomerController extends Controller
   }
 
   /**
-   * Create customers.
+   * Create customers from CSV file.
+   *
+   * @param CreateCustomersRequest $request
+   * @return JsonResponse
    */
-  public function createCustomers(Request $request): JsonResponse
+  public function createCustomers(CreateCustomersRequest $request): JsonResponse
   {
-    // Validation
-    $rules = Validator::make($request->all(), [
-      // '*.' is used to validate each field in an array of objects
-      '*.first_name' => 'required|string|max:20',
-      '*.last_name' => 'required|string|max:20',
-      '*.email' => 'required|email',
-      '*.phone' => 'required|string|max:15',
-      '*.address' => 'required|string|max:40',
-      '*.city' => 'required|string|max:20',
-      '*.zip_code' => 'required|string|max:10',
-    ]);
-
-    if ($rules->fails()) {
-      return response()->json(
-        [
-          'message' => 'Invalid CSV file format.',
-        ],
-        400,
-      );
-    }
-
-    $validatedCustomerData = $rules->validated();
+    $validatedCustomerData = $request->validated();
 
     // Create customers
     try {
@@ -319,33 +276,15 @@ class CustomerController extends Controller
   }
 
   /**
-   * Update the specified resource in storage.
+   * Update customer.
+   *
+   * @param UpdateCustomerRequest $request
+   * @param Customer $customer
+   * @return JsonResponse
    */
-  public function updateCustomer(
-    Request $request,
-    Customer $customer,
-  ): JsonResponse {
-    // Validation
-    $rules = Validator::make($request->all(), [
-      'first_name' => 'required|string|max:20',
-      'last_name' => 'required|string|max:20',
-      'email' => 'required|email',
-      'phone' => 'required|string|max:15',
-      'address' => 'required|string|max:40',
-      'city' => 'required|string|max:20',
-      'zip_code' => 'required|string|max:10',
-    ]);
-
-    if ($rules->fails()) {
-      return response()->json(
-        [
-          'message' => 'Invalid customer data.',
-        ],
-        400,
-      );
-    }
-
-    $validatedCustomer = $rules->validated();
+  public function updateCustomer(UpdateCustomerRequest $request, Customer $customer): JsonResponse
+  {
+    $validatedCustomer = $request->validated();
 
     // Update customer
     try {

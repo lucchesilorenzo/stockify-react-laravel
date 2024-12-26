@@ -48,7 +48,7 @@ class UpdateCurrentMonthInventoryValue extends Command
 
             $this->info('Current month inventory value updated successfully.');
         } catch (\Throwable $e) {
-            $this->error('Failed to update current month inventory value: '.$e->getMessage());
+            $this->error('Failed to update current month inventory value: ' . $e->getMessage());
         }
     }
 }

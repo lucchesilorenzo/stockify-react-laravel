@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateSupplierRequest;
+use App\Http\Requests\UpdateSupplierRatingRequest;
 use App\Models\Activity;
 use App\Models\Supplier;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class SupplierController extends Controller
 {
 	/**
-	 * Display a listing of the resource.
+	 * Get all suppliers.
+	 *
+	 * @return JsonResponse
 	 */
 	public function getSuppliers(): JsonResponse
 	{
@@ -24,28 +26,15 @@ class SupplierController extends Controller
 	}
 
 	/**
-	 * Store a newly created resource in storage.
+	 * Create a new supplier.
+	 *
+	 * @param CreateSupplierRequest $request
+	 * @return JsonResponse
 	 */
-	public function createSupplier(Request $request): JsonResponse
+	public function createSupplier(CreateSupplierRequest $request): JsonResponse
 	{
-		// Validation
-		$rules = Validator::make($request->all(), ([
-			'name' => 'required|string|max:20',
-			'email' => 'required|email|unique:users',
-			'phone' => 'required|string|max:15',
-			'address' => 'required|string|max:40',
-			'city' => 'required|string|max:20',
-			'zip_code' => 'required|string|max:10',
-			'website' => 'nullable|string|max:100',
-		]));
-
-		// Check if validation fails
-		if ($rules->fails()) {
-			return response()->json(['message' => 'Invalid supplier data.'], 400);
-		}
-
 		// Get validated data
-		$validatedData = $rules->validated();
+		$validatedData = $request->validated();
 
 		// Create supplier
 		try {
@@ -77,22 +66,16 @@ class SupplierController extends Controller
 	}
 
 	/**
-	 * Update the specified resource in storage.
+	 * Update supplier rating.
+	 *
+	 * @param UpdateSupplierRatingRequest $request
+	 * @param Supplier $supplier
+	 * @return JsonResponse
 	 */
-	public function updateSupplierRating(Request $request, Supplier $supplier): JsonResponse
+	public function updateSupplierRating(UpdateSupplierRatingRequest $request, Supplier $supplier): JsonResponse
 	{
-		// Validation
-		$rules = Validator::make($request->all(), ([
-			'rating' => 'required|integer|min:1|max:5',
-		]));
-
-		// Check if validation fails
-		if ($rules->fails()) {
-			return response()->json(['message' => 'Invalid rating data.'], 400);
-		}
-
 		// Get validated data
-		$validatedData = $rules->validated();
+		$validatedData = $request->validated();
 
 		// Update supplier rating
 		try {
@@ -102,14 +85,12 @@ class SupplierController extends Controller
 		}
 
 		// Create activity
-		$activity = [
-			'activity' => 'UPDATED',
-			'entity' => 'Supplier',
-			'user_id' => auth()->user()->id,
-		];
-
 		try {
-			Activity::create($activity);
+			Activity::create([
+				'activity' => 'UPDATED',
+				'entity' => 'Supplier',
+				'user_id' => auth()->user()->id,
+			]);
 		} catch (\Throwable $e) {
 			return response()->json(['message' => 'Failed to create activity.'], 500);
 		}
